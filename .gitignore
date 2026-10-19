@@ -1,0 +1,38 @@
+# Build output & dependencies
+node_modules/
+dist/
+.astro/
+.env*
+.vscode/
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Protótipo: Apenas a Homepage (src/pages/index.astro) é versionada
+src/pages/*
+!src/pages/index.astro
+
+# Componentes antigos/não utilizados na Homepage
+src/components/home/GardenSection.astro
+src/components/home/GuestbookSection.astro
+src/components/home/LocationSection.astro
+src/components/home/RoomsSection.astro
+src/components/home/StorySection.astro
+src/components/navigation/MegaMenu.astro
+src/components/navigation/MobileDrawer.astro
+src/types/navigation.ts
+src/actions/
+src/actions.bak/
+.agents/
+
+# Imagens: Apenas imagens da primeira página, logo e favicon são versionados
+public/assets/imagem/alojamento/*
+!public/assets/imagem/alojamento/our-house.jpg
+!public/assets/imagem/alojamento/bedroom-figo.jpg
+!public/assets/imagem/alojamento/our-garden.jpg
+!public/assets/imagem/alojamento/mertola-by-night.jpg
+!public/assets/imagem/alojamento/kitchen.jpg
+!public/assets/imagem/alojamento/pool.jpg
+!public/assets/imagem/alojamento/living-room.jpg

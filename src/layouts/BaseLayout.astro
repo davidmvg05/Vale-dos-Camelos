@@ -1,0 +1,66 @@
+---
+import Navbar from '@/components/navigation/Navbar.astro';
+import Footer from '@/components/navigation/Footer.astro';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = 'Vale de Camelos — Country House & Agroturismo em Mértola, Alentejo',
+  description = 'Descubra a serenidade e introspeção do Baixo Alentejo no Vale de Camelos. Alojamento Local com 4 quartos inspirados no pomar, piscina e aluguer exclusivo da casa.',
+  image = `${import.meta.env.BASE_URL}assets/imagem/alojamento/our-house.jpg`,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://davidmvg05.github.io');
+const imageURL = new URL(image, Astro.site || 'https://davidmvg05.github.io');
+---
+
+<!doctype html>
+<html lang="pt" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}assets/favicon/favicon.svg`} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Título e Metadados Principais -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Vale de Camelos, Alojamento Local Alentejo, Mértola turismo rural, Monte Alentejano, Agroturismo Portugal, Aluguer de férias, VRBO Vale de Camelos" />
+    <meta name="author" content="Vale de Camelos" />
+    <meta name="theme-color" content="#FAF9F6" />
+
+    <!-- Open Graph / Redes Sociais -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:locale" content="pt_PT" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+  </head>
+  <body class="bg-[#FAF9F6] text-[#1A1A1A] min-h-screen flex flex-col font-sans selection:bg-[#69130D] selection:text-[#FAF9F6]">
+    <!-- Âncora de topo -->
+    <span id="topo" class="sr-only">Topo da página</span>
+
+    <!-- Floating Pill Navbar -->
+    <Navbar />
+
+    <!-- Conteúdo Principal (fixa-se no final do scroll para o rodapé sobrepor em todas as páginas) -->
+    <main id="page-main-content" class="flex-1 sticky top-0 z-10 bg-[#FAF9F6] min-h-screen">
+      <slot />
+    </main>
+
+    <!-- Rodapé Oficial -->
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,1017 @@
+---
+// Rodapé Sobreposto à Quarta Secção:
+// - Cartão com curvas iguais às imagens (rounded-2xl lg:rounded-3xl)
+// - Background mais claro (bg-black/25 backdrop-blur-md border border-white/25)
+// - Canto superior esquerdo: Camelo em SVG
+// - Canto inferior esquerdo: Ícones das redes sociais em círculos brancos
+// - 4 Colunas todas com o mesmo tipo de letra e tamanho maior:
+//   1. Contactos
+//   2. Apartamentos / Visitar / A Herdade / Livro de Visitas / Contactos
+//   3. Mais páginas (A Casa, Os Quartos, O Jardim, Vilas Alentejanas, Gastronomia, Desporto e Lazer)
+//   4. Políticas Legais (Livro de Reclamações, Política de Privacidade, Política de Cookies, Termos e Condições)
+// - Lado Direito: Barra de Reservas sempre com a estrutura para telemóveis
+// - Sem barra inferior ("Vale de Camelos" e "Made by Bruto" apagados)
+import { ROOMS_CONFIG } from '@/types/booking';
+
+const roomsList = Object.values(ROOMS_CONFIG);
+---
+
+<!-- Pista de scroll universal (em todas as páginas e resoluções) para revelar o rodapé sobreposto no final da página -->
+<div id="camel-scroll-track" class="block h-[85vh] w-full pointer-events-none" aria-hidden="true"></div>
+
+<!-- Contentor Fixo do Rodapé Sobreposto -->
+<footer
+  id="camel-footer-overlay"
+  class="fixed bottom-0 left-0 right-0 z-40 pointer-events-none flex flex-col justify-end will-change-transform px-3 sm:px-5 lg:px-6 pb-3 sm:pb-5 pt-4"
+  style="transform: translateY(105%);"
+  role="contentinfo"
+  aria-label="Rodapé Vale de Camelos"
+>
+  <!-- Cartão Principal do Rodapé com Curvas iguais às Imagens (rounded-2xl lg:rounded-3xl) e Background Mais Claro -->
+  <div
+    id="camel-frosted-panel"
+    class="relative w-full bg-black/25 backdrop-blur-md border border-white/25 rounded-2xl lg:rounded-3xl shadow-[0_-16px_40px_rgba(0,0,0,0.2)] px-6 sm:px-10 lg:px-12 py-8 sm:py-10 text-[#FAF9F6] font-sans transition-colors duration-200"
+  >
+    <div class="flex flex-col lg:flex-row items-stretch justify-between gap-8 lg:gap-8 min-h-[340px] lg:min-h-[370px]">
+      
+      <!-- Extremo Esquerdo: Logo Camelo em cima + Redes Sociais no canto inferior esquerdo -->
+      <div class="flex flex-row lg:flex-col items-center lg:items-start justify-between shrink-0 lg:w-[110px] xl:w-[130px]">
+        <!-- Logo Camelo -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="inline-block group focus:outline-none cursor-pointer"
+          aria-label="Vale de Camelos - Página Inicial"
+        >
+          <svg
+            viewBox="0 0 500 375"
+            class="w-16 sm:w-20 lg:w-24 h-auto fill-[#FAF9F6] transition-transform duration-300 group-hover:scale-105"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M 250 10 L 255 11 L 264 21 L 272 40 L 278 47 L 295 78 L 305 93 L 322 108 L 338 116 L 343 116 L 347 111 L 346 100 L 345 99 L 346 98 L 345 97 L 345 84 L 350 69 L 356 62 L 359 61 L 359 57 L 357 53 L 357 50 L 359 48 L 369 48 L 378 44 L 384 39 L 395 39 L 398 40 L 400 45 L 406 49 L 408 48 L 422 48 L 427 50 L 430 53 L 430 56 L 434 61 L 436 66 L 436 69 L 432 76 L 423 76 L 421 77 L 414 81 L 406 90 L 406 97 L 410 115 L 409 134 L 407 139 L 407 143 L 401 159 L 393 171 L 374 187 L 366 191 L 350 196 L 332 197 L 329 193 L 329 190 L 325 187 L 322 187 L 320 189 L 316 190 L 315 191 L 316 192 L 315 191 L 300 206 L 301 207 L 300 206 L 299 207 L 298 218 L 288 235 L 286 244 L 286 261 L 289 272 L 289 280 L 288 285 L 283 296 L 283 301 L 282 302 L 282 326 L 285 333 L 285 337 L 288 342 L 293 346 L 299 347 L 302 351 L 302 355 L 294 355 L 285 353 L 273 353 L 272 356 L 274 359 L 274 362 L 270 364 L 248 364 L 240 361 L 237 357 L 237 355 L 242 347 L 241 337 L 243 334 L 250 301 L 250 274 L 255 258 L 256 234 L 258 226 L 258 217 L 256 215 L 249 215 L 246 217 L 234 220 L 213 220 L 212 221 L 191 221 L 190 222 L 180 221 L 153 212 L 128 198 L 124 208 L 122 219 L 117 227 L 114 236 L 111 240 L 112 267 L 108 279 L 108 289 L 110 295 L 112 312 L 120 335 L 129 350 L 134 355 L 138 357 L 148 358 L 150 360 L 152 366 L 145 368 L 144 367 L 143 368 L 124 368 L 121 365 L 118 358 L 116 357 L 113 347 L 104 326 L 97 312 L 82 288 L 82 284 L 84 280 L 85 259 L 86 258 L 86 246 L 83 235 L 77 243 L 74 261 L 65 279 L 64 289 L 59 302 L 58 317 L 57 318 L 58 320 L 58 341 L 61 347 L 62 353 L 66 357 L 67 356 L 71 358 L 75 357 L 78 360 L 78 363 L 67 366 L 48 367 L 47 366 L 47 357 L 45 352 L 46 350 L 45 348 L 46 341 L 48 337 L 47 336 L 48 335 L 47 333 L 47 311 L 43 295 L 43 285 L 41 281 L 41 278 L 43 277 L 42 274 L 46 267 L 55 237 L 55 228 L 54 227 L 50 235 L 47 257 L 45 263 L 43 267 L 42 267 L 44 258 L 45 234 L 47 227 L 47 192 L 50 184 L 50 177 L 51 176 L 52 148 L 56 137 L 65 129 L 76 124 L 79 121 L 87 118 L 97 111 L 95 102 L 96 101 L 97 91 L 100 87 L 100 84 L 106 76 L 109 64 L 114 60 L 114 58 L 118 51 L 125 44 L 145 29 L 151 26 L 159 17 L 164 15 L 178 16 L 182 18 L 187 23 L 191 31 L 191 45 L 190 48 L 192 56 L 194 62 L 199 70 L 198 82 L 201 87 L 202 86 L 216 86 L 221 78 L 227 58 L 234 46 L 231 30 L 232 21 L 236 15 L 240 12 L 250 10 Z"
+            />
+          </svg>
+        </a>
+
+        <!-- Ícones das Redes Sociais no Canto Inferior Esquerdo -->
+        <div class="flex items-center gap-2.5 mt-4 lg:mt-0">
+          <!-- Facebook -->
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            aria-label="Facebook Vale de Camelos"
+            class="w-8 h-8 rounded-full bg-[#FAF9F6] text-[#1C1917] flex items-center justify-center hover:bg-[#FAF9F6]/80 transition-colors cursor-pointer"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5Z" />
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            aria-label="Instagram Vale de Camelos"
+            class="w-8 h-8 rounded-full bg-[#FAF9F6] text-[#1C1917] flex items-center justify-center hover:bg-[#FAF9F6]/80 transition-colors cursor-pointer"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            aria-label="YouTube Vale de Camelos"
+            class="w-8 h-8 rounded-full bg-[#FAF9F6] text-[#1C1917] flex items-center justify-center hover:bg-[#FAF9F6]/80 transition-colors cursor-pointer"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+          </a>
+          <!-- LinkedIn -->
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            aria-label="LinkedIn Vale de Camelos"
+            class="w-8 h-8 rounded-full bg-[#FAF9F6] text-[#1C1917] flex items-center justify-center hover:bg-[#FAF9F6]/80 transition-colors cursor-pointer"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 Colunas Centrais: Todas com o mesmo tipo de letra (font-sans) e maiores (text-sm sm:text-base) -->
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 pt-2 lg:pt-4 font-sans">
+        
+        <!-- 1ª Coluna: Contactos -->
+        <div class="flex flex-col justify-between">
+          <div>
+            <h3 class="font-sans text-sm sm:text-base font-bold uppercase tracking-wider text-[#FAF9F6] mb-4">
+              Contactos
+            </h3>
+            <ul class="space-y-2.5 text-sm sm:text-[15px] font-normal text-[#FAF9F6]/90">
+              <li>
+                <a href="#" onclick="event.preventDefault()" class="hover:text-white transition-colors block cursor-pointer">
+                  +351 916 648 140
+                </a>
+              </li>
+              <li>
+                <a href="#" onclick="event.preventDefault()" class="hover:text-white transition-colors block break-all cursor-pointer">
+                  inquiries@valedecamelos.pt
+                </a>
+              </li>
+              <li class="leading-relaxed pt-1">
+                Herdade Vale de Camelos<br />
+                7750-000 Mértola<br />
+                Baixo Alentejo, Portugal
+              </li>
+            </ul>
+          </div>
+
+          <div class="mt-6 lg:mt-0 space-y-1.5 text-sm sm:text-[15px] font-normal text-[#FAF9F6]/90">
+            <p class="font-semibold text-[#FAF9F6]">Receção &amp; Reservas</p>
+            <p>Check-in: a partir das 15h00</p>
+            <p>Check-out: até às 12h00</p>
+          </div>
+        </div>
+
+        <!-- 2ª Coluna: Apartamentos / Visitar / A Herdade / Livro de Visitas / Contactos -->
+        <div class="flex flex-col justify-start">
+          <h3 class="font-sans text-sm sm:text-base font-bold uppercase tracking-wider text-[#FAF9F6] mb-4">
+            Menu
+          </h3>
+          <ul class="space-y-2.5 text-sm sm:text-[15px] font-normal text-[#FAF9F6]/90">
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Apartamentos
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Visitar
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                A Herdade
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Livro de Visitas
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Contactos
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3ª Coluna: Mais algumas páginas -->
+        <div class="flex flex-col justify-start">
+          <h3 class="font-sans text-sm sm:text-base font-bold uppercase tracking-wider text-[#FAF9F6] mb-4">
+            Explorar
+          </h3>
+          <ul class="space-y-2.5 text-sm sm:text-[15px] font-normal text-[#FAF9F6]/90">
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                A Casa
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Os Quartos
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                O Jardim
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Vilas Alentejanas
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Gastronomia
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Desporto e Lazer
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 4ª Coluna: Políticas Legais -->
+        <div class="flex flex-col justify-start">
+          <h3 class="font-sans text-sm sm:text-base font-bold uppercase tracking-wider text-[#FAF9F6] mb-4">
+            Políticas Legais
+          </h3>
+          <ul class="space-y-2.5 text-sm sm:text-[15px] font-normal text-[#FAF9F6]/90">
+            <li>
+              <a
+                href="#"
+                onclick="event.preventDefault()"
+                class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer"
+              >
+                Livro de Reclamações
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Política de Privacidade
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Política de Cookies
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="event.preventDefault()" class="hover:text-white hover:translate-x-0.5 inline-block transition-all cursor-pointer">
+                Termos e Condições
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Lado Direito: Barra de Reservas sempre com a estrutura para telemóveis -->
+      <div class="w-full lg:w-[310px] xl:w-[340px] shrink-0 flex flex-col justify-center items-center lg:items-end pt-2 lg:pt-0">
+        <div
+          id="footer-booking-bar-container"
+          class="relative w-full max-w-[340px] font-sans text-[#1C1917]"
+          aria-label="Motor de Pesquisa de Alojamentos no Rodapé"
+        >
+          <!-- Estrutura vertical de telemóvel permanente (flex-col items-stretch) -->
+          <div class="flex flex-col items-stretch justify-between gap-2 bg-[#FAF9F6] border-2 border-[#69130D] rounded-xl p-3 shadow-lg transition-all duration-300">
+            
+            <!-- 1. SELETOR DE ALOJAMENTO -->
+            <div class="relative flex-1">
+              <button
+                type="button"
+                id="footer-btn-room-trigger"
+                aria-expanded="false"
+                aria-controls="footer-dropdown-rooms"
+                class="w-full text-left px-3 py-2 rounded-md border border-transparent hover:border-[#69130D] focus:border-[#69130D] focus:outline-none transition-all duration-300 flex items-center justify-between gap-2 group"
+              >
+                <div class="overflow-hidden">
+                  <span class="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#69130D] mb-0.5">
+                    Alojamento
+                  </span>
+                  <span id="footer-label-room-selected" class="block text-xs font-medium text-[#1C1917] truncate">
+                    Selecionar Quarto
+                  </span>
+                </div>
+                <svg class="w-3.5 h-3.5 text-[#69130D]/70 group-hover:text-[#69130D] transition-transform duration-200 shrink-0" id="footer-icon-room-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <!-- Dropdown Quartos (Abre para cima para não cortar no fundo do ecrã) -->
+              <div
+                id="footer-dropdown-rooms"
+                role="listbox"
+                aria-label="Lista de Alojamentos"
+                class="hidden absolute left-0 bottom-[calc(100%+8px)] w-full bg-[#FAF9F6] rounded-lg shadow-2xl border-2 border-[#69130D] p-2 z-50"
+              >
+                <div class="text-[10px] font-bold uppercase tracking-wider text-[#69130D] px-2.5 py-1">
+                  Escolha a sua unidade
+                </div>
+                <ul class="space-y-1 mt-1 max-h-[220px] overflow-y-auto">
+                  {roomsList.map((room) => (
+                    <li>
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected="false"
+                        data-footer-room-id={room.id}
+                        data-footer-room-name={room.name}
+                        data-footer-max-guests={room.maxGuests}
+                        class="footer-room-option-btn w-full text-left px-2.5 py-2 rounded-md hover:bg-[#69130D]/10 transition-colors flex items-center justify-between group"
+                      >
+                        <div>
+                          <p class="text-xs font-semibold text-[#1C1917] group-hover:text-[#69130D] transition-colors">
+                            {room.name}
+                          </p>
+                          <p class="text-[10px] text-[#57534E]">
+                            Máximo {room.maxGuests} hóspedes
+                          </p>
+                        </div>
+                        <span class="w-4 h-4 rounded-full border border-[#69130D]/40 flex items-center justify-center group-hover:border-[#69130D]">
+                          <span class="footer-room-radio-dot w-2 h-2 rounded-full bg-[#69130D] opacity-0 transition-opacity"></span>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div class="h-px bg-[#69130D]/20 w-full"></div>
+
+            <!-- 2. SELETOR DE DATAS -->
+            <div class="relative flex-1">
+              <button
+                type="button"
+                id="footer-btn-dates-trigger"
+                aria-expanded="false"
+                aria-controls="footer-dropdown-dates"
+                class="w-full text-left px-3 py-2 rounded-md border border-transparent hover:border-[#69130D] focus:border-[#69130D] focus:outline-none transition-all duration-300 flex items-center justify-between gap-2 group"
+              >
+                <div class="overflow-hidden">
+                  <span class="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#69130D] mb-0.5">
+                    Datas da Estadia
+                  </span>
+                  <span id="footer-label-dates-selected" class="block text-xs font-medium text-[#1C1917] truncate">
+                    Check-in — Check-out
+                  </span>
+                </div>
+                <svg class="w-3.5 h-3.5 text-[#69130D]/70 group-hover:text-[#69130D] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </button>
+
+              <!-- Dropdown Calendário (1 Mês de estrutura telemóvel, abre para cima) -->
+              <div
+                id="footer-dropdown-dates"
+                role="dialog"
+                aria-label="Calendário de Disponibilidade"
+                class="hidden absolute left-0 bottom-[calc(100%+8px)] w-full bg-[#FAF9F6] rounded-lg shadow-2xl border-2 border-[#69130D] p-3.5 z-50"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <button
+                    type="button"
+                    id="footer-cal-prev-month"
+                    aria-label="Mês anterior"
+                    class="p-1 rounded-full hover:bg-[#69130D]/10 text-[#69130D] disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <span id="footer-cal-selection-hint" class="text-[10px] font-bold uppercase tracking-wider text-[#69130D]">
+                    Selecione a data de Check-in
+                  </span>
+                  <button
+                    type="button"
+                    id="footer-cal-next-month"
+                    aria-label="Mês seguinte"
+                    class="p-1 rounded-full hover:bg-[#69130D]/10 text-[#69130D] transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- 1 Mês (Estrutura Mobile) -->
+                <div>
+                  <h4 id="footer-cal-month-1-title" class="text-center font-serif text-sm font-semibold text-[#1C1917] mb-2 capitalize"></h4>
+                  <div class="grid grid-cols-7 gap-0.5 text-center text-[9px] font-bold uppercase text-[#57534E] mb-1">
+                    <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+                  </div>
+                  <div id="footer-cal-month-1-days" class="grid grid-cols-7 gap-0.5 text-xs"></div>
+                </div>
+
+                <div class="mt-3 pt-2 border-t border-[#69130D]/20 flex items-center justify-between text-[10px] text-[#57534E]">
+                  <button
+                    type="button"
+                    id="footer-cal-clear-dates"
+                    class="text-[#69130D] hover:underline font-semibold"
+                  >
+                    Limpar datas
+                  </button>
+                  <button
+                    type="button"
+                    id="footer-cal-Confirm-dates"
+                    class="px-3 py-1 bg-[#69130D] text-[#FAF9F6] rounded text-[10px] font-bold uppercase tracking-wider hover:bg-[#520E09]"
+                  >
+                    Aplicar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="h-px bg-[#69130D]/20 w-full"></div>
+
+            <!-- 3. SELETOR DE HÓSPEDES -->
+            <div class="relative flex-1">
+              <button
+                type="button"
+                id="footer-btn-guests-trigger"
+                aria-expanded="false"
+                aria-controls="footer-dropdown-guests"
+                class="w-full text-left px-3 py-2 rounded-md border border-transparent hover:border-[#69130D] focus:border-[#69130D] focus:outline-none transition-all duration-300 flex items-center justify-between gap-2 group"
+              >
+                <div class="overflow-hidden">
+                  <span class="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#69130D] mb-0.5">
+                    Hóspedes
+                  </span>
+                  <span id="footer-label-guests-selected" class="block text-xs font-medium text-[#1C1917] truncate">
+                    2 Adultos
+                  </span>
+                </div>
+                <svg class="w-3.5 h-3.5 text-[#69130D]/70 group-hover:text-[#69130D] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+
+              <!-- Dropdown Hóspedes (Abre para cima) -->
+              <div
+                id="footer-dropdown-guests"
+                role="dialog"
+                aria-label="Seleção de Hóspedes"
+                class="hidden absolute left-0 bottom-[calc(100%+8px)] w-full bg-[#FAF9F6] rounded-lg shadow-2xl border-2 border-[#69130D] p-3.5 z-50 max-h-[260px] overflow-y-auto"
+              >
+                <div class="mb-2 pb-1.5 border-b border-[#69130D]/20 flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-[#69130D]">Capacidade</span>
+                  <span id="footer-guests-capacity-badge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#69130D]/10 text-[#69130D]">
+                    Máx. 4 hóspedes
+                  </span>
+                </div>
+
+                <!-- Contador Adultos -->
+                <div class="flex items-center justify-between py-2">
+                  <div>
+                    <p class="text-xs font-semibold text-[#1C1917]">Adultos</p>
+                    <p class="text-[10px] text-[#57534E]">18 anos ou mais</p>
+                  </div>
+                  <div class="flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      id="footer-btn-adults-minus"
+                      aria-label="Diminuir adultos"
+                      class="w-7 h-7 rounded-full border border-[#69130D] flex items-center justify-center text-[#69130D] hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs"
+                    >
+                      −
+                    </button>
+                    <span id="footer-count-adults" class="w-4 text-center text-xs font-semibold text-[#1C1917]">2</span>
+                    <button
+                      type="button"
+                      id="footer-btn-adults-plus"
+                      aria-label="Aumentar adultos"
+                      class="w-7 h-7 rounded-full border border-[#69130D] flex items-center justify-center text-[#69130D] hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Contador Crianças -->
+                <div class="flex items-center justify-between py-2 border-t border-[#69130D]/15">
+                  <div>
+                    <p class="text-xs font-semibold text-[#1C1917]">Crianças</p>
+                    <p class="text-[10px] text-[#57534E]">0 aos 17 anos</p>
+                  </div>
+                  <div class="flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      id="footer-btn-children-minus"
+                      aria-label="Diminuir crianças"
+                      class="w-7 h-7 rounded-full border border-[#69130D] flex items-center justify-center text-[#69130D] hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs"
+                    >
+                      −
+                    </button>
+                    <span id="footer-count-children" class="w-4 text-center text-xs font-semibold text-[#1C1917]">0</span>
+                    <button
+                      type="button"
+                      id="footer-btn-children-plus"
+                      aria-label="Aumentar crianças"
+                      class="w-7 h-7 rounded-full border border-[#69130D] flex items-center justify-center text-[#69130D] hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Idade das Crianças -->
+                <div id="footer-children-ages-container" class="hidden pt-2 mt-1 border-t border-[#69130D]/15 space-y-2">
+                  <p class="text-[10px] font-bold uppercase tracking-wider text-[#69130D]">
+                    Idade na data do check-out
+                  </p>
+                  <div id="footer-children-ages-list" class="grid grid-cols-2 gap-1.5"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. BOTÃO DE AÇÃO (RESERVAR) -->
+            <div class="w-full flex justify-center pt-1">
+              <button
+                type="button"
+                id="footer-btn-submit-booking"
+                class="w-full px-6 py-2.5 rounded-md bg-[#69130D] hover:bg-[#520E09] active:scale-[0.99] text-[#FAF9F6] font-bold text-xs uppercase tracking-[0.18em] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              >
+                <span>Reservar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mensagem de Protótipo debaixo do Botão Reservar -->
+          <div
+            id="footer-booking-validation-toast"
+            role="status"
+            class="hidden mt-2 bg-[#69130D] text-[#FAF9F6] text-xs font-medium px-3.5 py-2 rounded-lg shadow-xl text-center leading-snug"
+          >
+            Website em fase de protótipo.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { ROOMS_CONFIG, type RoomId } from '@/types/booking';
+  import { buildVrboDeepLink } from '@/lib/vrbo/urlBuilder';
+
+  // ============================================================================
+  // 1. Animação de Sobreposição do Rodapé ao fazer Scroll (Universal para todas as páginas)
+  // ============================================================================
+  function setupDeltaStyleScrollReveal(): void {
+    const main = document.getElementById('page-main-content');
+    const track = document.getElementById('camel-scroll-track');
+    const overlay = document.getElementById('camel-footer-overlay');
+
+    if (!overlay || !track) return;
+
+    let ticking = false;
+
+    function syncMainStickyTop(): void {
+      if (!main) return;
+      const windowHeight = window.innerHeight;
+      const mainHeight = main.offsetHeight;
+      // Garante que o <main> faz scroll normal até ao seu final e depois fixa-se no ecrã
+      // enquanto o utilizador percorre o #camel-scroll-track e o rodapé sobe por cima
+      const stickyTop = Math.min(0, windowHeight - mainHeight);
+      main.style.top = `${stickyTop}px`;
+    }
+
+    function update(): void {
+      const windowHeight = window.innerHeight;
+      syncMainStickyTop();
+
+      let progress = 0;
+
+      // Quando o utilizador entra na página (scrollY no topo), o rodapé nunca aparece antes de fazer scroll
+      if (window.scrollY > 2) {
+        const rect = track.getBoundingClientRect();
+        const totalDistance = rect.height;
+        if (totalDistance > 0) {
+          // O rodapé só começa a aparecer quando o final do conteúdo da página chega ao fundo do ecrã (rect.top <= windowHeight)
+          const scrolled = windowHeight - rect.top;
+          progress = Math.max(0, Math.min(1, scrolled / totalDistance));
+        }
+      }
+
+      if (progress <= 0.005) {
+        overlay.style.transform = 'translateY(105%)';
+        overlay.style.pointerEvents = 'none';
+      } else {
+        const translateY = (1 - progress) * 105;
+        overlay.style.transform = `translateY(${translateY.toFixed(2)}%)`;
+        overlay.style.pointerEvents = progress >= 0.65 ? 'auto' : 'none';
+      }
+
+      ticking = false;
+    }
+
+    function onScroll(): void {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    if (main && typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(() => {
+        onScroll();
+      });
+      ro.observe(main);
+    }
+
+    update();
+  }
+
+  // ============================================================================
+  // 2. Lógica da Barra de Reservas do Rodapé (Estrutura Mobile Permanente)
+  // ============================================================================
+  function setupFooterBookingBar(): void {
+    let selectedRoomId: RoomId | null = null;
+    let maxCapacity = 8;
+    let checkinDate: Date | null = null;
+    let checkoutDate: Date | null = null;
+    let adultsCount = 2;
+    let childrenCount = 0;
+    let childrenAges: number[] = [];
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let currentViewMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const btnRoomTrigger = document.getElementById('footer-btn-room-trigger');
+    const btnDatesTrigger = document.getElementById('footer-btn-dates-trigger');
+    const btnGuestsTrigger = document.getElementById('footer-btn-guests-trigger');
+    const btnSubmit = document.getElementById('footer-btn-submit-booking');
+
+    const dropdownRooms = document.getElementById('footer-dropdown-rooms');
+    const dropdownDates = document.getElementById('footer-dropdown-dates');
+    const dropdownGuests = document.getElementById('footer-dropdown-guests');
+
+    const labelRoom = document.getElementById('footer-label-room-selected');
+    const labelDates = document.getElementById('footer-label-dates-selected');
+    const labelGuests = document.getElementById('footer-label-guests-selected');
+    const validationToast = document.getElementById('footer-booking-validation-toast');
+
+    if (!btnRoomTrigger || !btnDatesTrigger || !btnGuestsTrigger) return;
+
+    function showToast(message: string): void {
+      if (!validationToast) return;
+      validationToast.textContent = message;
+      validationToast.classList.remove('hidden');
+      setTimeout(() => {
+        validationToast.classList.add('hidden');
+      }, 3500);
+    }
+
+    function closeAllDropdowns(): void {
+      dropdownRooms?.classList.add('hidden');
+      dropdownDates?.classList.add('hidden');
+      dropdownGuests?.classList.add('hidden');
+      btnRoomTrigger?.setAttribute('aria-expanded', 'false');
+      btnDatesTrigger?.setAttribute('aria-expanded', 'false');
+      btnGuestsTrigger?.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleDropdown(targetDropdown: HTMLElement | null, triggerBtn: HTMLElement | null): void {
+      if (!targetDropdown || !triggerBtn) return;
+      const isHidden = targetDropdown.classList.contains('hidden');
+      closeAllDropdowns();
+      if (isHidden) {
+        targetDropdown.classList.remove('hidden');
+        triggerBtn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    btnRoomTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown(dropdownRooms, btnRoomTrigger);
+    });
+
+    btnDatesTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown(dropdownDates, btnDatesTrigger);
+    });
+
+    btnGuestsTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown(dropdownGuests, btnGuestsTrigger);
+    });
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('footer-booking-bar-container');
+      if (container && !container.contains(e.target as Node)) {
+        closeAllDropdowns();
+      }
+    });
+
+    // Seleção de Quarto
+    const roomButtons = document.querySelectorAll<HTMLButtonElement>('.footer-room-option-btn');
+    roomButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-footer-room-id') as RoomId | null;
+        const name = btn.getAttribute('data-footer-room-name');
+        const max = Number(btn.getAttribute('data-footer-max-guests') || 4);
+
+        if (!id || !name) return;
+        selectedRoomId = id;
+        maxCapacity = max;
+
+        if (labelRoom) labelRoom.textContent = name;
+
+        roomButtons.forEach((b) => {
+          b.setAttribute('aria-selected', 'false');
+          b.querySelector('.footer-room-radio-dot')?.classList.add('opacity-0');
+        });
+        btn.setAttribute('aria-selected', 'true');
+        btn.querySelector('.footer-room-radio-dot')?.classList.remove('opacity-0');
+
+        enforceGuestCapacity();
+        toggleDropdown(dropdownDates, btnDatesTrigger);
+      });
+    });
+
+    // Calendário (1 Mês)
+    const calMonth1Title = document.getElementById('footer-cal-month-1-title');
+    const calMonth1Days = document.getElementById('footer-cal-month-1-days');
+    const calPrevBtn = document.getElementById('footer-cal-prev-month') as HTMLButtonElement | null;
+    const calNextBtn = document.getElementById('footer-cal-next-month') as HTMLButtonElement | null;
+    const calClearBtn = document.getElementById('footer-cal-clear-dates');
+    const calConfirmBtn = document.getElementById('footer-cal-Confirm-dates');
+    const calHint = document.getElementById('footer-cal-selection-hint');
+
+    function formatShortDate(date: Date): string {
+      return date.toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
+    }
+
+    function isSameDay(a: Date | null, b: Date | null): boolean {
+      if (!a || !b) return false;
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function updateDatesLabel(): void {
+      if (!labelDates) return;
+      if (checkinDate && checkoutDate) {
+        labelDates.textContent = `${formatShortDate(checkinDate)} — ${formatShortDate(checkoutDate)}`;
+      } else if (checkinDate) {
+        labelDates.textContent = `${formatShortDate(checkinDate)} — Check-out`;
+      } else {
+        labelDates.textContent = 'Check-in — Check-out';
+      }
+    }
+
+    function renderMonthGrid(year: number, month: number, container: HTMLElement | null, titleEl: HTMLElement | null): void {
+      if (!container || !titleEl) return;
+      const monthDate = new Date(year, month, 1);
+      titleEl.textContent = monthDate.toLocaleDateString('pt-PT', { month: 'long', year: 'numeric' });
+      container.replaceChildren();
+
+      const firstDayWeek = monthDate.getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayWeek; i++) {
+        const empty = document.createElement('span');
+        container.appendChild(empty);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(year, month, day);
+        cellDate.setHours(0, 0, 0, 0);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = String(day);
+
+        const isPast = cellDate < today;
+        const isSelectedStart = isSameDay(cellDate, checkinDate);
+        const isSelectedEnd = isSameDay(cellDate, checkoutDate);
+        const isInRange = checkinDate && checkoutDate && cellDate > checkinDate && cellDate < checkoutDate;
+
+        let classes = 'h-7 w-full rounded flex items-center justify-center text-[11px] transition-colors ';
+
+        if (isPast) {
+          classes += 'text-[#57534E]/35 cursor-not-allowed';
+          btn.disabled = true;
+        } else if (isSelectedStart || isSelectedEnd) {
+          classes += 'bg-[#69130D] text-[#FAF9F6] font-bold';
+        } else if (isInRange) {
+          classes += 'bg-[#69130D]/15 text-[#69130D] font-semibold';
+        } else {
+          classes += 'text-[#1C1917] hover:bg-[#69130D]/10 font-medium';
+        }
+
+        btn.className = classes;
+
+        if (!isPast) {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleDateClick(cellDate);
+          });
+        }
+
+        container.appendChild(btn);
+      }
+    }
+
+    function renderCalendars(): void {
+      const y1 = currentViewMonth.getFullYear();
+      const m1 = currentViewMonth.getMonth();
+      renderMonthGrid(y1, m1, calMonth1Days, calMonth1Title);
+
+      if (calPrevBtn) {
+        const isCurrentMonth = y1 === today.getFullYear() && m1 === today.getMonth();
+        calPrevBtn.disabled = isCurrentMonth;
+      }
+
+      if (calHint) {
+        if (!checkinDate || (checkinDate && checkoutDate)) {
+          calHint.textContent = 'Selecione a data de Check-in';
+        } else {
+          calHint.textContent = 'Selecione a data de Check-out';
+        }
+      }
+    }
+
+    function handleDateClick(clickedDate: Date): void {
+      if (!checkinDate || (checkinDate && checkoutDate) || clickedDate <= checkinDate) {
+        checkinDate = clickedDate;
+        checkoutDate = null;
+      } else {
+        checkoutDate = clickedDate;
+      }
+      updateDatesLabel();
+      renderCalendars();
+    }
+
+    calPrevBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentViewMonth = new Date(currentViewMonth.getFullYear(), currentViewMonth.getMonth() - 1, 1);
+      renderCalendars();
+    });
+
+    calNextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentViewMonth = new Date(currentViewMonth.getFullYear(), currentViewMonth.getMonth() + 1, 1);
+      renderCalendars();
+    });
+
+    calClearBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      checkinDate = null;
+      checkoutDate = null;
+      updateDatesLabel();
+      renderCalendars();
+    });
+
+    calConfirmBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown(dropdownGuests, btnGuestsTrigger);
+    });
+
+    // Hóspedes
+    const countAdultsEl = document.getElementById('footer-count-adults');
+    const countChildrenEl = document.getElementById('footer-count-children');
+    const btnAdultsMinus = document.getElementById('footer-btn-adults-minus') as HTMLButtonElement | null;
+    const btnAdultsPlus = document.getElementById('footer-btn-adults-plus') as HTMLButtonElement | null;
+    const btnChildrenMinus = document.getElementById('footer-btn-children-minus') as HTMLButtonElement | null;
+    const btnChildrenPlus = document.getElementById('footer-btn-children-plus') as HTMLButtonElement | null;
+    const capacityBadge = document.getElementById('footer-guests-capacity-badge');
+    const childrenAgesContainer = document.getElementById('footer-children-ages-container');
+    const childrenAgesList = document.getElementById('footer-children-ages-list');
+
+    function enforceGuestCapacity(): void {
+      if (capacityBadge) {
+        capacityBadge.textContent = selectedRoomId
+          ? `Máx. ${maxCapacity} hóspedes`
+          : 'Selecione alojamento';
+      }
+
+      const totalGuests = adultsCount + childrenCount;
+      if (totalGuests > maxCapacity) {
+        const overflow = totalGuests - maxCapacity;
+        if (childrenCount >= overflow) {
+          childrenCount -= overflow;
+          childrenAges = childrenAges.slice(0, childrenCount);
+        } else {
+          childrenCount = 0;
+          childrenAges = [];
+          adultsCount = Math.max(1, maxCapacity);
+        }
+      }
+      updateGuestsUI();
+    }
+
+    function renderChildrenAgeSelectors(): void {
+      if (!childrenAgesContainer || !childrenAgesList) return;
+
+      if (childrenCount === 0) {
+        childrenAgesContainer.classList.add('hidden');
+        childrenAgesList.replaceChildren();
+        return;
+      }
+
+      childrenAgesContainer.classList.remove('hidden');
+      childrenAgesList.replaceChildren();
+
+      for (let i = 0; i < childrenCount; i++) {
+        const currentAge = childrenAges[i] ?? 5;
+        childrenAges[i] = currentAge;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex flex-col gap-0.5';
+
+        const label = document.createElement('label');
+        label.className = 'text-[10px] font-medium text-[#57534E]';
+        label.textContent = `Criança ${i + 1}`;
+
+        const select = document.createElement('select');
+        select.className = 'px-2 py-1 rounded border border-[#69130D]/40 bg-white text-xs text-[#1C1917] focus:outline-none focus:border-[#69130D]';
+
+        for (let age = 0; age <= 17; age++) {
+          const opt = document.createElement('option');
+          opt.value = String(age);
+          opt.textContent = age === 0 ? '< 1 ano' : `${age} ${age === 1 ? 'ano' : 'anos'}`;
+          if (age === currentAge) opt.selected = true;
+          select.appendChild(opt);
+        }
+
+        select.addEventListener('change', () => {
+          childrenAges[i] = Number(select.value);
+        });
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        childrenAgesList.appendChild(wrapper);
+      }
+    }
+
+    function updateGuestsUI(): void {
+      if (countAdultsEl) countAdultsEl.textContent = String(adultsCount);
+      if (countChildrenEl) countChildrenEl.textContent = String(childrenCount);
+
+      const total = adultsCount + childrenCount;
+
+      if (btnAdultsMinus) btnAdultsMinus.disabled = adultsCount <= 1;
+      if (btnAdultsPlus) btnAdultsPlus.disabled = total >= maxCapacity;
+      if (btnChildrenMinus) btnChildrenMinus.disabled = childrenCount <= 0;
+      if (btnChildrenPlus) btnChildrenPlus.disabled = total >= maxCapacity;
+
+      if (labelGuests) {
+        const adultsText = `${adultsCount} ${adultsCount === 1 ? 'Adulto' : 'Adultos'}`;
+        const childrenText = childrenCount > 0
+          ? `, ${childrenCount} ${childrenCount === 1 ? 'Criança' : 'Crianças'}`
+          : '';
+        labelGuests.textContent = adultsText + childrenText;
+      }
+
+      renderChildrenAgeSelectors();
+    }
+
+    btnAdultsMinus?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (adultsCount > 1) {
+        adultsCount--;
+        updateGuestsUI();
+      }
+    });
+
+    btnAdultsPlus?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (adultsCount + childrenCount < maxCapacity) {
+        adultsCount++;
+        updateGuestsUI();
+      }
+    });
+
+    btnChildrenMinus?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (childrenCount > 0) {
+        childrenCount--;
+        childrenAges.pop();
+        updateGuestsUI();
+      }
+    });
+
+    btnChildrenPlus?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (adultsCount + childrenCount < maxCapacity) {
+        childrenCount++;
+        childrenAges.push(5);
+        updateGuestsUI();
+      }
+    });
+
+    // Submissão para VRBO
+    function toIsoString(d: Date): string {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // Modo Protótipo: Mensagem de demonstração profissional abaixo do botão Reservar
+    btnSubmit?.addEventListener('click', () => {
+      closeAllDropdowns();
+      showToast('Website em fase de protótipo.');
+    });
+
+    renderCalendars();
+    updateGuestsUI();
+  }
+
+  function initFooterAll(): void {
+    setupDeltaStyleScrollReveal();
+    setupFooterBookingBar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFooterAll);
+  } else {
+    initFooterAll();
+  }
+</script>

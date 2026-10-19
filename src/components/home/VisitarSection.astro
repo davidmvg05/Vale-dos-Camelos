@@ -1,0 +1,174 @@
+---
+import ArrowButton from '@/components/common/ArrowButton.astro';
+
+// Dados das 3 experiências para Visitar a Região
+const regiaoCards = [
+  {
+    title: 'Vilas Alentejanas',
+    description: 'Mértola vila museu, o castelo islâmico debruçado sobre o Guadiana, Beja medieval e a herança histórica viva.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/mertola-by-night.jpg`,
+    btnText: 'Conhecer Vilas',
+  },
+  {
+    title: 'Gastronomia',
+    description: 'Os sabores genuínos das açordas, ensopados tradicionais, queijos de Serpa curados e vinhos de talha do Baixo Alentejo.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/kitchen.jpg`,
+    btnText: 'Provar Sabores',
+  },
+  {
+    title: 'Desporto e Lazer',
+    description: 'Trilhos pedestres na serra, canoagem no Rio Guadiana, cicloturismo de natureza e observação dos céus estrelados.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/pool.jpg`,
+    btnText: 'Explorar Atividades',
+  },
+];
+---
+
+<section class="py-20 lg:py-28 bg-[#FAF9F6] relative overflow-hidden" id="visitar">
+  <div class="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+    
+    <!-- =========================================================
+         TOPO: Animação fadeInDown na frase "VISITAR A REGIÃO" e no título
+         ========================================================= -->
+    <div id="visitar-header" class="text-center max-w-4xl mx-auto mb-14 sm:mb-20 will-change-transform">
+      <!-- Tag a preto com fadeInDown -->
+      <span class="visitar-fade-down-tag text-xs font-mono uppercase tracking-widest text-black font-bold block mb-4">
+        VISITAR A REGIÃO
+      </span>
+
+      <!-- Título Principal com fadeInDown -->
+      <h2 class="visitar-fade-down-title font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#69130D] leading-[1.15]">
+        Experiências autênticas desenhadas para os sentidos
+      </h2>
+    </div>
+
+    <!-- =========================================================
+         CONTEÚDO: 3 Imagens Lado a Lado com animação fadeInUp
+         ========================================================= -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 items-stretch" id="visitar-grid">
+      {regiaoCards.map((card, idx) => (
+        <article class="visitar-card group flex flex-col justify-between will-change-transform" data-index={idx}>
+          
+          <!-- Imagem com Proporção Vertical, Curva Elegante e Animação fadeInUp -->
+          <div class="visitar-img-wrapper relative aspect-[4/5] sm:aspect-[3/4] w-full rounded-2xl lg:rounded-3xl overflow-hidden bg-black/5 shadow-md mb-4">
+            <img
+              src={card.image}
+              alt={card.title}
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              loading="lazy"
+            />
+
+            <!-- Gradiente Inferior com Título e Descrição na Imagem -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" aria-hidden="true"></div>
+
+            <div class="visitar-overlay-text absolute bottom-0 left-0 right-0 p-6 sm:p-7 text-white z-20 flex flex-col justify-end">
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
+                {card.title}
+              </h3>
+              <p class="text-xs sm:text-sm text-white/85 leading-relaxed line-clamp-2 sm:line-clamp-3">
+                {card.description}
+              </p>
+            </div>
+          </div>
+
+          <!-- EM BAIXO DA IMAGEM: Apenas o Botão Oficial -->
+          <div class="visitar-btn-slot pt-2">
+            <ArrowButton href={card.href} variant="red">
+              {card.btnText}
+            </ArrowButton>
+          </div>
+
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* 1. Animação fadeInDown na frase "VISITAR A REGIÃO" e no título */
+  .visitar-fade-down-tag,
+  .visitar-fade-down-title {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  #visitar.in-view .visitar-fade-down-tag {
+    animation: visitarFadeInDown 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  #visitar.in-view .visitar-fade-down-title {
+    animation: visitarFadeInDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  }
+
+  @keyframes visitarFadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 2. Animação fadeInUp nas imagens */
+  .visitar-card {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  #visitar.in-view article[data-index="0"].visitar-card {
+    animation: visitarFadeInUp 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+  }
+
+  #visitar.in-view article[data-index="1"].visitar-card {
+    animation: visitarFadeInUp 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+  }
+
+  #visitar.in-view article[data-index="2"].visitar-card {
+    animation: visitarFadeInUp 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+  }
+
+  @keyframes visitarFadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  function setupVisitarSection(): void {
+    const section = document.getElementById('visitar');
+    const header = document.getElementById('visitar-header');
+    if (!section || !header) return;
+
+    // A animação só começa quando o utilizador já está confortavelmente dentro da secção a ver o cabeçalho
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add('in-view');
+            observer.unobserve(header);
+          }
+        });
+      },
+      { threshold: 0.35, rootMargin: '0px 0px -18% 0px' }
+    );
+    observer.observe(header);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupVisitarSection);
+  } else {
+    setupVisitarSection();
+  }
+</script>

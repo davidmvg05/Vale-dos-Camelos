@@ -1,0 +1,23 @@
+{
+  "name": "vale-de-camelos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "type": "module",
+  "dependencies": {
+    "@astroanimate/core": "^0.1.2",
+    "@astrojs/node": "^11.1.7",
+    "@astrojs/tailwind": "^6.0.2",
+    "@types/node": "^26.6.5",
+    "astro": "^7.3.8",
+    "flatpickr": "^4.6.13",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^7.0.2",
+    "zod": "^4.6.7"
+  }
+}

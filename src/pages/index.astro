@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HeroSection from '@/components/home/HeroSection.astro';
+import HerdadeSection from '@/components/home/HerdadeSection.astro';
+import VisitarSection from '@/components/home/VisitarSection.astro';
+import ServicesSection from '@/components/home/ServicesSection.astro';
+---
+
+<BaseLayout
+  title="Vale de Camelos — Country House & Agroturismo em Mértola, Alentejo"
+  description="Desfrute da calma e beleza autêntica do Baixo Alentejo no Vale de Camelos. Quartos inspirados no pomar, piscina panorâmica, lareira e alojamento de charme em Mértola."
+>
+  <!-- 1. Primeira Secção: Hero com Barra de Reservas -->
+  <HeroSection />
+
+  <!-- 2. Segunda Secção: A Herdade (Submenus 01, 02, 03 com troca e animação de rolo) -->
+  <HerdadeSection />
+
+  <!-- 3. Terceira Secção: Visitar a Região (Apresentação Imagem 1, animações e botões) -->
+  <VisitarSection />
+
+  <!-- 4. Quarta Secção: Serviços (fixa-se no fim do scroll para o rodapé sobrepor) -->
+  <div id="services-pinned-stage" class="relative w-full lg:min-h-screen flex flex-col justify-center overflow-hidden bg-[#FAF9F6]">
+    <ServicesSection />
+  </div>
+</BaseLayout>

@@ -1,0 +1,335 @@
+---
+import ArrowButton from '@/components/common/ArrowButton.astro';
+
+// Dados dos 3 submenus da Herdade
+const herdadeSubmenus = [
+  {
+    num: '01',
+    label: 'A Casa',
+    fullTitle: 'A Casa Senhorial',
+    description: 'A casa senhorial alentejana com lareira, salão de convívio e aconchego rústico.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/our-house.jpg`,
+    btnText: 'Conhecer A Casa',
+  },
+  {
+    num: '02',
+    label: 'Os Quartos',
+    fullTitle: 'Os Quartos do Pomar',
+    description: '4 quartos confortáveis batizados pelos frutos do pomar, com luz natural e serenidade.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/bedroom-figo.jpg`,
+    btnText: 'Conhecer Os Quartos',
+  },
+  {
+    num: '03',
+    label: 'O Jardim',
+    fullTitle: 'O Jardim & Piscina',
+    description: 'Piscina panorâmica sobre o montado, pomar biológico e recantos serenos de sombra.',
+    href: '#',
+    image: `${import.meta.env.BASE_URL}assets/imagem/alojamento/our-garden.jpg`,
+    btnText: 'Conhecer O Jardim',
+  },
+];
+---
+
+<section class="py-20 lg:py-28 bg-[#FAF9F6] relative overflow-hidden" id="herdade">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-8 lg:px-12">
+    <div id="herdade-main-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
+      
+      <!-- =========================================================
+           LADO ESQUERDO:
+           Tag a preto. Frase em 3 linhas:
+           1. "Viva um refúgio"
+           2. "onde cada detalhe"
+           3. "acolhe a alma."
+           Submenu 03 alinhado com o fim da imagem à direita.
+           ========================================================= -->
+      <div id="herdade-left-col" class="lg:col-span-6 flex flex-col justify-between will-change-transform">
+        <div>
+          <!-- Tag a preto -->
+          <span class="text-xs font-mono uppercase tracking-widest text-black font-bold block mb-4">
+            A HERDADE
+          </span>
+
+          <!-- Título Principal em 3 linhas exatas -->
+          <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#69130D] leading-[1.2]">
+            <span class="block">Viva um refúgio</span>
+            <span class="block">onde cada detalhe</span>
+            <span class="block">acolhe a alma.</span>
+          </h2>
+        </div>
+
+        <!-- Submenus Interactivos: 01, 02, 03
+             w-fit: Apenas ativa quando o rato está diretamente por cima do número ou da palavra
+             No desktop, o submenu 03 alinha-se perfeitamente com a base da imagem (lg:mb-[68px]) -->
+        <div class="flex flex-col items-start space-y-4 pt-8 lg:pt-0 lg:mb-[68px]" role="tablist" aria-label="Submenus da Herdade">
+          {herdadeSubmenus.map((item, idx) => (
+            <button
+              type="button"
+              class:list={[
+                'herdade-tab-btn group w-fit inline-flex items-center gap-4 text-left py-2.5 px-1 transition-all duration-300 border-none outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 select-none cursor-pointer',
+                idx === 0 ? 'active text-[#69130D]' : 'text-[#7D7D6A]/60 hover:text-[#69130D]'
+              ]}
+              data-index={idx}
+              role="tab"
+              aria-selected={idx === 0 ? 'true' : 'false'}
+            >
+              <!-- Número: 01, 02, 03 -->
+              <span class="tab-num font-mono text-sm sm:text-base font-bold transition-colors duration-300">
+                {item.num}
+              </span>
+
+              <!-- Traço separador "—" -->
+              <span class="tab-dash text-sm sm:text-base font-light transition-opacity duration-300 opacity-60">
+                —
+              </span>
+
+              <!-- Nome do Submenu -->
+              <span class="tab-label font-serif text-lg sm:text-xl lg:text-2xl font-bold transition-all duration-300">
+                {item.label}
+              </span>
+            </button>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- =========================================================
+           LADO DIREITO:
+           - 1ª vez que aparece: animação slideInUp lenta e suave
+           - Ao trocar entre 01, 02 e 03: fadeOut da imagem anterior e entrada da nova imagem
+           ========================================================= -->
+      <div id="herdade-right-col" class="lg:col-span-6 flex flex-col items-center lg:items-end">
+        <div id="herdade-right-inner" class="w-full max-w-[480px] will-change-transform">
+          
+          <!-- Contentor da Imagem Vertical (aspect-[4/5]) sem borda vermelha -->
+          <div id="herdade-image-roll-wrapper" class="relative aspect-[4/5] w-full rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl bg-transparent">
+            {herdadeSubmenus.map((item, idx) => (
+              <div
+                class:list={[
+                  'herdade-slide absolute inset-0 rounded-2xl lg:rounded-3xl overflow-hidden bg-[#FAF9F6]',
+                  idx === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 pointer-events-none z-0'
+                ]}
+                data-slide-index={idx}
+              >
+                <div class="w-full h-full relative overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.fullTitle}
+                    class="slide-img w-full h-full object-cover"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                  />
+
+                  <!-- Gradiente Inferior com Título e Descrição sobre a imagem -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" aria-hidden="true"></div>
+
+                  <!-- Título e Descrição Sobrepostos na Imagem -->
+                  <div class="slide-overlay-text absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white z-20 flex flex-col justify-end">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
+                      {item.fullTitle}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-white/85 leading-relaxed line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <!-- EM BAIXO DA IMAGEM: Apenas o Botão Oficial -->
+          <div class="pt-5 flex justify-start w-full relative min-h-[52px]">
+            {herdadeSubmenus.map((item, idx) => (
+              <div
+                class:list={[
+                  'herdade-btn-slot transition-opacity duration-500 ease-in-out',
+                  idx === 0 ? 'opacity-100 relative z-10' : 'opacity-0 pointer-events-none absolute inset-x-0 top-5 z-0'
+                ]}
+                data-btn-index={idx}
+              >
+                <ArrowButton href={item.href} variant="red">
+                  {item.btnText}
+                </ArrowButton>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Remove contorno e retângulo de foco nativo */
+  .herdade-tab-btn,
+  .herdade-tab-btn:focus,
+  .herdade-tab-btn:focus-visible,
+  .herdade-tab-btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Estado Inicial de Entrada da Coluna Esquerda: Animação mais lenta (1.8s) */
+  #herdade-left-col {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #herdade.in-view #herdade-left-col {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* 1ª Vez que aparece a imagem: Animação slideInUp lenta e contemplativa (2s) */
+  #herdade-right-inner {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+
+  #herdade.in-view #herdade-right-inner {
+    animation: herdadeSlideInUp 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes herdadeSlideInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Transição de troca de imagem (fadeOut da imagem que está e fadeIn da nova) */
+  .herdade-slide {
+    transition: opacity 0.65s ease-in-out;
+  }
+
+  .herdade-slide.fade-out {
+    animation: herdadeFadeOut 0.6s ease-in-out forwards;
+  }
+
+  .herdade-slide.fade-in {
+    animation: herdadeFadeIn 0.65s ease-in-out forwards;
+  }
+
+  @keyframes herdadeFadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes herdadeFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  function setupHerdadeSection(): void {
+    const section = document.getElementById('herdade');
+    const mainGrid = document.getElementById('herdade-main-grid');
+    if (!section || !mainGrid) return;
+
+    const tabs = section.querySelectorAll<HTMLButtonElement>('.herdade-tab-btn');
+    const slides = section.querySelectorAll<HTMLDivElement>('.herdade-slide');
+    const btnSlots = section.querySelectorAll<HTMLDivElement>('.herdade-btn-slot');
+
+    let currentIndex = 0;
+
+    // 1. Observer calibrado: só dispara quando o utilizador já está centrado na secção a olhar para o conteúdo
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add('in-view');
+            observer.unobserve(mainGrid);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -20% 0px' }
+    );
+    observer.observe(mainGrid);
+
+    // 2. Troca entre 01, 02 e 03: fadeOut da imagem atual e entrada suave da imagem correspondente
+    function activateSlide(index: number): void {
+      if (index === currentIndex) {
+        return;
+      }
+
+      const previousIndex = currentIndex;
+      currentIndex = index;
+
+      // Atualizar Abas (01, 02, 03)
+      tabs.forEach((tab, idx) => {
+        const isSelected = idx === index;
+        tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        if (isSelected) {
+          tab.classList.remove('text-[#7D7D6A]/60');
+          tab.classList.add('active', 'text-[#69130D]');
+        } else {
+          tab.classList.remove('active', 'text-[#69130D]');
+          tab.classList.add('text-[#7D7D6A]/60');
+        }
+      });
+
+      // Imagem anterior faz fadeOut e nova imagem aparece
+      const prevSlide = slides[previousIndex];
+      const nextSlide = slides[index];
+
+      slides.forEach((slide, idx) => {
+        if (idx !== previousIndex && idx !== index) {
+          slide.classList.remove('fade-in', 'fade-out', 'opacity-100', 'z-10', 'is-active');
+          slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+        }
+      });
+
+      if (prevSlide) {
+        prevSlide.classList.remove('fade-in', 'opacity-100', 'z-10', 'is-active');
+        prevSlide.classList.add('fade-out', 'pointer-events-none', 'z-0');
+      }
+
+      if (nextSlide) {
+        nextSlide.classList.remove('fade-out', 'opacity-0', 'pointer-events-none', 'z-0');
+        nextSlide.classList.add('fade-in', 'opacity-100', 'z-10', 'is-active');
+      }
+
+      // Atualizar botão correspondente em simultâneo
+      btnSlots.forEach((slot, idx) => {
+        if (idx === index) {
+          slot.classList.remove('opacity-0', 'pointer-events-none', 'absolute', 'inset-x-0', 'top-5', 'z-0');
+          slot.classList.add('opacity-100', 'relative', 'z-10');
+        } else {
+          slot.classList.add('opacity-0', 'pointer-events-none', 'absolute', 'inset-x-0', 'top-5', 'z-0');
+          slot.classList.remove('opacity-100', 'relative', 'z-10');
+        }
+      });
+    }
+
+    tabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => activateSlide(idx));
+      tab.addEventListener('mouseenter', () => activateSlide(idx));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupHerdadeSection);
+  } else {
+    setupHerdadeSection();
+  }
+</script>

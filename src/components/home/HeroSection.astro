@@ -1,0 +1,46 @@
+---
+import BookingBar from '@/components/booking/BookingBar.astro';
+---
+
+<section class="relative min-h-[90vh] md:min-h-screen flex flex-col justify-center items-center px-4 py-16 bg-[#240604]">
+  <!-- Imagem de Fundo Panorâmica com Overlay Gradiente -->
+  <div class="absolute inset-0 z-0 overflow-hidden">
+    <img
+      src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/our-house.jpg`}
+      alt="Vale de Camelos Country House em Mértola"
+      class="w-full h-full object-cover object-center filter brightness-[0.78]"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50"></div>
+  </div>
+
+  <!-- Conteúdo Central: Título no Centro da Imagem com animação fadeIn -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
+    <h1 class="hero-fade-in-title font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#FAF9F6] tracking-tight leading-[1.2] drop-shadow-md break-words xl:whitespace-nowrap">
+      A Introspeção e Serenidade do Baixo Alentejo
+    </h1>
+  </div>
+
+  <!-- Barra de Reservas Mais Abaixo do Centro -->
+  <div class="relative z-20 w-full mt-12 md:mt-16 lg:mt-20">
+    <BookingBar />
+  </div>
+</section>
+
+<style>
+  .hero-fade-in-title {
+    animation: heroFadeIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes heroFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+// Componente de Ação Oficial — Design System Vale de Camelos (Secção 4.1)
+// Suporta as duas variações oficiais:
+// - white: Branco sublinhado para Branco (#ffffff), linha desaparece suavemente no hover
+// - red: Vermelho sublinhado para Vermelho (#69130D), linha desaparece suavemente no hover
+// Modo Protótipo: links desativados (não navegam para fora da homepage)
+
+interface Props {
+  href?: string;
+  variant?: 'white' | 'red' | 'white-to-red' | 'black-to-red' | 'red-to-black';
+  class?: string;
+  target?: string;
+  rel?: string;
+  id?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href = '#',
+  variant = 'red',
+  class: className = '',
+  target,
+  rel,
+  id,
+  ariaLabel,
+} = Astro.props;
+
+const isWhite = variant === 'white' || variant === 'white-to-red';
+
+const colorStyles = isWhite
+  ? {
+      text: 'text-[#ffffff]',
+      line: 'bg-[#ffffff]',
+      focus: 'focus-visible:ring-[#ffffff]',
+    }
+  : {
+      text: 'text-[#69130D]',
+      line: 'bg-[#69130D]',
+      focus: 'focus-visible:ring-[#69130D]',
+    };
+---
+
+<a
+  href="#"
+  onclick="event.preventDefault()"
+  id={id}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+  class:list={[
+    'group inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest uppercase transition-colors duration-300 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-sm cursor-pointer',
+    colorStyles.text,
+    colorStyles.focus,
+    className,
+  ]}
+>
+  <span class="relative pb-1">
+    <slot />
+    <span
+      class:list={[
+        'absolute bottom-0 left-0 w-full h-[1px] transition-opacity duration-300 ease-out group-hover:opacity-0',
+        colorStyles.line,
+      ]}
+      aria-hidden="true"
+    ></span>
+  </span>
+  <span
+    class="inline-block transform transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+    aria-hidden="true"
+  >
+    &rarr;
+  </span>
+</a>

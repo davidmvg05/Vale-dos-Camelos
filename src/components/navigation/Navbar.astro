@@ -1,0 +1,459 @@
+---
+// Navbar inspirada nas Imagens de Referência (Estilo Ballena):
+// - Transição leve e suave (crossfade de logos e rotação do ícone toggle).
+// - Animação de descida suave ao abrir e subida suave ao fechar.
+// - Scroll invisível (sem barra visível, mas funcional).
+// - Hover das palavras: Fica preto puro (#000000) sem risco.
+// - Animação Reveal Image: 1 única imagem revela-se ao fazer hover no item do menu,
+//   com expansão suave e sombra elegante.
+// - Rodapé elegante com redes sociais à esquerda e copyright à direita.
+---
+
+<!-- Overlay de fundo (cobre a página quando o menu está aberto) -->
+<div
+  id="nav-overlay"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-400"
+  aria-hidden="true"
+></div>
+
+<!-- Container da Barra de Navegação e Menu Suspenso -->
+<header
+  id="navbar-wrapper"
+  class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[620px] pointer-events-none"
+>
+  <!-- ===================================================================
+       1. Linha Superior: [ Reservar (Maior) ] --- [ Logo ] --- [ Hamburger / X ]
+       =================================================================== -->
+  <div
+    id="navbar-top-bar"
+    class="pointer-events-auto w-full bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between shadow-pill transition-all duration-400 ease-out"
+  >
+    <!-- Lado Esquerdo: Botão Reservar com Mensagem de Protótipo -->
+    <div class="relative">
+      <button
+        type="button"
+        id="nav-btn-book"
+        class="inline-block border-2 border-[#ffffff] text-[#ffffff] bg-transparent hover:bg-[#ffffff] hover:text-[#000000] hover:border-[#ffffff] text-xs sm:text-sm font-bold tracking-widest uppercase px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg focus:outline-none transition-all duration-300 ease-out cursor-pointer"
+        aria-label="Reservar Alojamento"
+      >
+        Reservar
+      </button>
+
+      <!-- Mensagem de Protótipo debaixo do Botão Reservar -->
+      <div
+        id="nav-book-prototype-msg"
+        role="status"
+        class="hidden absolute left-0 top-[calc(100%+10px)] w-[220px] sm:w-[240px] bg-black/90 backdrop-blur-md text-[#FAF9F6] border border-white/20 text-xs font-sans font-medium px-3.5 py-2.5 rounded-xl shadow-2xl text-center leading-snug z-50 transition-all duration-300"
+      >
+        Website em fase de protótipo.
+      </div>
+    </div>
+
+    <!-- Centro: Logótipo com Crossfade Suave -->
+    <a href="#" onclick="event.preventDefault()" class="focus:outline-none flex items-center justify-center p-1 cursor-pointer" aria-label="Vale de Camelos - Página Inicial">
+      <div class="relative h-7 sm:h-9 w-32 sm:w-40 flex items-center justify-center">
+        <!-- Logo Branco -->
+        <img
+          id="logo-white"
+          src={`${import.meta.env.BASE_URL}assets/imagem/logo/logo_vale_de_camelos_branco.png`}
+          alt="Vale de Camelos"
+          class="absolute inset-0 h-full w-full object-contain transition-opacity duration-400 ease-in-out opacity-100"
+          width="160"
+          height="38"
+        />
+        <!-- Logo Vermelho -->
+        <img
+          id="logo-red"
+          src={`${import.meta.env.BASE_URL}assets/imagem/logo/logo_vale_de_camelos_vermelho.png`}
+          alt="Vale de Camelos"
+          class="absolute inset-0 h-full w-full object-contain transition-opacity duration-400 ease-in-out opacity-0 pointer-events-none"
+          width="160"
+          height="38"
+        />
+      </div>
+    </a>
+
+    <!-- Lado Direito: Botão Toggle (Hamburger / X com Crossfade & Rotação) -->
+    <button
+      type="button"
+      id="nav-toggle-btn"
+      class="relative w-10 h-10 flex items-center justify-center text-[#FAF9F6] hover:opacity-85 focus:outline-none rounded-lg transition-colors duration-400"
+      aria-label="Abrir ou fechar menu de navegação"
+      aria-expanded="false"
+      aria-controls="nav-dropdown-card"
+    >
+      <!-- Ícone Hamburger -->
+      <svg id="icon-hamburger" xmlns="http://www.w3.org/2000/svg" class="absolute w-7 h-7 sm:w-8 sm:h-8 transition-all duration-300 ease-in-out opacity-100 rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" x2="20" y1="7" y2="7"></line>
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="17" y2="17"></line>
+      </svg>
+      <!-- Ícone X -->
+      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="absolute w-7 h-7 sm:w-8 sm:h-8 transition-all duration-300 ease-in-out opacity-0 -rotate-90 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ===================================================================
+       2. Menu Aberto: Card com Animação de Descida/Subida, Reveal Image (1 Imagem)
+       =================================================================== -->
+  <div
+    id="nav-dropdown-card"
+    class="pointer-events-auto mt-3 w-full bg-[#FAF9F6] border border-[#69130D]/20 rounded-3xl shadow-dropdown overflow-hidden flex flex-col justify-between max-h-[calc(100dvh-100px)]"
+  >
+    <!-- Área de Conteúdo Interno com Scroll Invisível (no-scrollbar) -->
+    <div class="p-6 sm:p-8 flex flex-col justify-between h-full overflow-y-auto no-scrollbar">
+      
+      <!-- Navegação Principal com Efeito Reveal Image (1 Imagem por item) -->
+      <nav id="menu-nav-list" class="flex flex-col items-center justify-center space-y-2.5 sm:space-y-3.5 text-center font-serif py-2 w-full" aria-label="Navegação Central">
+        
+        <!-- 1. Apartamentos -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="reveal-nav-item group relative flex items-center justify-center w-full py-2.5 sm:py-3 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+        >
+          <span class="reveal-nav-text font-serif text-xl sm:text-2xl md:text-[26px] font-bold uppercase tracking-widest text-[#69130D] group-hover:text-black transition-colors duration-200">
+            Apartamentos
+          </span>
+          <!-- Reveal Image Layer (1 Única Imagem) -->
+          <div class="reveal-image-wrapper pointer-events-none absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-30">
+            <div class="reveal-card absolute inset-0 rounded-xl overflow-hidden shadow-xl border border-[#69130D]/25 bg-[#FAF9F6]">
+              <img src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/our-house.jpg`} alt="A Casa Principal" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </a>
+
+        <!-- 2. Visitar -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="reveal-nav-item group relative flex items-center justify-center w-full py-2.5 sm:py-3 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+        >
+          <span class="reveal-nav-text font-serif text-xl sm:text-2xl md:text-[26px] font-bold uppercase tracking-widest text-[#69130D] group-hover:text-black transition-colors duration-200">
+            Visitar
+          </span>
+          <!-- Reveal Image Layer (1 Única Imagem) -->
+          <div class="reveal-image-wrapper pointer-events-none absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-30">
+            <div class="reveal-card absolute inset-0 rounded-xl overflow-hidden shadow-xl border border-[#69130D]/25 bg-[#FAF9F6]">
+              <img src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/mertola-by-night.jpg`} alt="Mértola e Vilas" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </a>
+
+        <!-- 3. A Herdade -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="reveal-nav-item group relative flex items-center justify-center w-full py-2.5 sm:py-3 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+        >
+          <span class="reveal-nav-text font-serif text-xl sm:text-2xl md:text-[26px] font-bold uppercase tracking-widest text-[#69130D] group-hover:text-black transition-colors duration-200">
+            A Herdade
+          </span>
+          <!-- Reveal Image Layer (1 Única Imagem) -->
+          <div class="reveal-image-wrapper pointer-events-none absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-30">
+            <div class="reveal-card absolute inset-0 rounded-xl overflow-hidden shadow-xl border border-[#69130D]/25 bg-[#FAF9F6]">
+              <img src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/our-garden.jpg`} alt="Jardim Vale de Camelos" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </a>
+
+        <!-- 4. Livro de Visitas -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="reveal-nav-item group relative flex items-center justify-center w-full py-2.5 sm:py-3 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+        >
+          <span class="reveal-nav-text font-serif text-xl sm:text-2xl md:text-[26px] font-bold uppercase tracking-widest text-[#69130D] group-hover:text-black transition-colors duration-200">
+            Livro de Visitas
+          </span>
+          <!-- Reveal Image Layer (1 Única Imagem) -->
+          <div class="reveal-image-wrapper pointer-events-none absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-30">
+            <div class="reveal-card absolute inset-0 rounded-xl overflow-hidden shadow-xl border border-[#69130D]/25 bg-[#FAF9F6]">
+              <img src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/living-room.jpg`} alt="Sala de Convivência" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </a>
+
+        <!-- 5. Contactos -->
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          class="reveal-nav-item group relative flex items-center justify-center w-full py-2.5 sm:py-3 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+        >
+          <span class="reveal-nav-text font-serif text-xl sm:text-2xl md:text-[26px] font-bold uppercase tracking-widest text-[#69130D] group-hover:text-black transition-colors duration-200">
+            Contactos
+          </span>
+          <!-- Reveal Image Layer (1 Única Imagem) -->
+          <div class="reveal-image-wrapper pointer-events-none absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-30">
+            <div class="reveal-card absolute inset-0 rounded-xl overflow-hidden shadow-xl border border-[#69130D]/25 bg-[#FAF9F6]">
+              <img src={`${import.meta.env.BASE_URL}assets/imagem/alojamento/pool.jpg`} alt="Piscina Vale de Camelos" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </a>
+
+      </nav>
+
+      <!-- Rodapé: Redes Sociais à Esquerda | 2026 © Vale dos Camelos à Direita -->
+      <div class="mt-6 sm:mt-8 pt-4 border-t border-[#69130D]/15 flex items-center justify-between text-xs sm:text-sm text-[#7D7D6A] bg-[#FAF9F6] shrink-0">
+        <!-- Redes Sociais -->
+        <div class="flex items-center gap-3">
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            class="text-[#69130D] hover:text-black transition-colors p-1 cursor-pointer"
+            aria-label="Instagram Vale de Camelos"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
+          </a>
+          <a
+            href="#"
+            onclick="event.preventDefault()"
+            class="text-[#69130D] hover:text-black transition-colors p-1 cursor-pointer"
+            aria-label="Facebook Vale de Camelos"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Copyright -->
+        <div class="font-medium text-[#7D7D6A]">
+          <span>2026 &copy; Vale dos Camelos</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Esconder a barra de scroll mas continuar a permitir scroll suave */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none !important; /* IE e Edge */
+    scrollbar-width: none !important; /* Firefox */
+  }
+
+  :global(html) {
+    scrollbar-gutter: stable;
+  }
+
+  /* Estado Inicial (Fechado): Fade out suave com micro-escala sem saltos verticais */
+  #nav-dropdown-card {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.99);
+    pointer-events: none;
+    transition: opacity 380ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 380ms;
+  }
+
+  /* Estado Aberto: Fade in suave com micro-escala */
+  #nav-dropdown-card.menu-open {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    pointer-events: auto;
+    transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* =========================================================
+     Efeito Reveal Image (1 Imagem por Item)
+     ========================================================= */
+  .reveal-image-wrapper {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.4);
+    visibility: hidden;
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+  }
+
+  .reveal-card {
+    transform: rotate(0deg) scale(1);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Ao fazer hover no link: A imagem única expande com rotação subtil e sombra */
+  .reveal-nav-item:hover .reveal-image-wrapper,
+  .reveal-nav-item:focus-visible .reveal-image-wrapper {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1);
+  }
+
+  .reveal-nav-item:hover .reveal-card,
+  .reveal-nav-item:focus-visible .reveal-card {
+    transform: rotate(4deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-image-wrapper,
+    .reveal-card {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupBallenaNavbar(): void {
+    const topBar = document.getElementById('navbar-top-bar');
+    const overlay = document.getElementById('nav-overlay');
+    const toggleBtn = document.getElementById('nav-toggle-btn');
+    const dropdownCard = document.getElementById('nav-dropdown-card');
+
+    const logoWhite = document.getElementById('logo-white');
+    const logoRed = document.getElementById('logo-red');
+    const iconHamburger = document.getElementById('icon-hamburger');
+    const iconClose = document.getElementById('icon-close');
+    const btnBook = document.getElementById('nav-btn-book');
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>('.reveal-nav-item');
+
+    if (!topBar || !overlay || !toggleBtn || !dropdownCard || !logoWhite || !logoRed || !iconHamburger || !iconClose || !btnBook) {
+      return;
+    }
+
+    let isOpen = false;
+
+    function openMenu(): void {
+      isOpen = true;
+
+      // 1. Transição suave das cores da barra superior
+      topBar.classList.remove('bg-black/40', 'border-white/20', 'shadow-pill');
+      topBar.classList.add('bg-[#FAF9F6]', 'border-[#69130D]/20', 'shadow-md');
+
+      // 2. Crossfade dos logótipos
+      logoWhite.classList.remove('opacity-100');
+      logoWhite.classList.add('opacity-0');
+      logoRed.classList.remove('opacity-0');
+      logoRed.classList.add('opacity-100');
+
+      // 3. Rotação e crossfade do Hamburger para o X
+      iconHamburger.classList.remove('opacity-100', 'rotate-0');
+      iconHamburger.classList.add('opacity-0', 'rotate-90');
+      iconClose.classList.remove('opacity-0', '-rotate-90');
+      iconClose.classList.add('opacity-100', 'rotate-0');
+      toggleBtn.classList.remove('text-[#FAF9F6]');
+      toggleBtn.classList.add('text-[#69130D]');
+
+      // 4. Botão Reservar com borda e texto Bordeaux (Menu Aberto)
+      btnBook.classList.remove('border-[#ffffff]', 'text-[#ffffff]', 'hover:bg-[#ffffff]', 'hover:text-[#000000]', 'hover:border-[#ffffff]');
+      btnBook.classList.add('border-[#69130D]', 'text-[#69130D]', 'hover:bg-[#69130D]', 'hover:text-[#ffffff]', 'hover:border-[#69130D]');
+
+      // 5. Animação de descida suave do card do menu
+      dropdownCard.classList.add('menu-open');
+
+      // 6. Ativar overlay
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100', 'pointer-events-auto');
+
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu(): void {
+      isOpen = false;
+
+      // 1. Animação de subida suave do card do menu
+      dropdownCard.classList.remove('menu-open');
+
+      // 2. Transição suave das cores da barra superior
+      topBar.classList.add('bg-black/40', 'border-white/20', 'shadow-pill');
+      topBar.classList.remove('bg-[#FAF9F6]', 'border-[#69130D]/20', 'shadow-md');
+
+      // 3. Crossfade dos logótipos
+      logoRed.classList.remove('opacity-100');
+      logoRed.classList.add('opacity-0');
+      logoWhite.classList.remove('opacity-0');
+      logoWhite.classList.add('opacity-100');
+
+      // 4. Rotação e crossfade do X de volta para Hamburger
+      iconClose.classList.remove('opacity-100', 'rotate-0');
+      iconClose.classList.add('opacity-0', '-rotate-90');
+      iconHamburger.classList.remove('opacity-0', 'rotate-90');
+      iconHamburger.classList.add('opacity-100', 'rotate-0');
+      toggleBtn.classList.add('text-[#FAF9F6]');
+      toggleBtn.classList.remove('text-[#69130D]');
+
+      // 5. Restaurar botão Reservar (Menu Fechado)
+      btnBook.classList.remove('border-[#69130D]', 'text-[#69130D]', 'hover:bg-[#69130D]', 'hover:text-[#ffffff]', 'hover:border-[#69130D]');
+      btnBook.classList.add('border-[#ffffff]', 'text-[#ffffff]', 'hover:bg-[#ffffff]', 'hover:text-[#000000]', 'hover:border-[#ffffff]');
+
+      // 6. Desativar overlay
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      overlay.classList.remove('opacity-100', 'pointer-events-auto');
+
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Previne scroll acidental na página de fundo quando o overlay está aberto, mantendo a barra de scroll visível
+    const preventBackgroundScroll = (e: Event): void => {
+      if (isOpen) {
+        e.preventDefault();
+      }
+    };
+    overlay.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    overlay.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    toggleBtn.addEventListener('click', (e: MouseEvent) => {
+      e.stopPropagation();
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    const navProtoMsg = document.getElementById('nav-book-prototype-msg');
+    let navProtoTimeout: any;
+
+    btnBook?.addEventListener('click', (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isOpen) closeMenu();
+      if (!navProtoMsg) return;
+
+      navProtoMsg.classList.remove('hidden');
+      clearTimeout(navProtoTimeout);
+      navProtoTimeout = setTimeout(() => {
+        navProtoMsg.classList.add('hidden');
+      }, 4500);
+    });
+
+    document.addEventListener('click', (e: MouseEvent) => {
+      if (navProtoMsg && !navProtoMsg.contains(e.target as Node) && e.target !== btnBook) {
+        navProtoMsg.classList.add('hidden');
+      }
+    });
+
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isOpen) closeMenu();
+        if (navProtoMsg) navProtoMsg.classList.add('hidden');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupBallenaNavbar);
+  } else {
+    setupBallenaNavbar();
+  }
+</script>

@@ -1,0 +1,705 @@
+---
+import { ROOMS_CONFIG, type RoomId } from '@/types/booking';
+
+const roomsList = Object.values(ROOMS_CONFIG);
+---
+
+<div id="reservas" class="w-full max-w-[1140px] mx-auto px-4 relative z-30">
+  <!-- Container da Barra de Reservas -->
+  <div
+    class="bg-[#FAF9F6] border-2 border-[#69130D] rounded-lg shadow-premium p-3 lg:p-2 lg:pl-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 lg:gap-0 transition-all duration-300"
+  >
+    
+    <!-- ===================================================================
+         Secção 1: Escolha do Quarto / Alojamento
+         =================================================================== -->
+    <div class="relative flex-1 group">
+      <button
+        type="button"
+        id="btn-room-trigger"
+        class="w-full flex flex-col justify-center px-4 py-2.5 rounded-lg transition-colors text-left outline-none focus:outline-none focus:ring-0 select-none cursor-pointer"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-label="Escolher Quarto ou Casa Completa"
+      >
+        <span class="text-[10px] font-bold uppercase tracking-wider text-[#7D7D6A]">ALOJAMENTO</span>
+        <div class="flex items-center justify-between mt-0.5">
+          <span id="selected-room-name" class="font-serif text-sm md:text-base font-semibold text-[#69130D] truncate">
+            {roomsList[0].name}
+          </span>
+          <svg id="icon-room-arrow" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#69130D]/70 shrink-0 ml-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      <!-- Dropdown de Seleção de Quartos:
+           - Em xs, sm, md (< lg: 992px): w-full left-0 translate-x-0 (ocupa o comprimento da barra)
+           - Em lg (992px+): lg:w-[380px] lg:-left-[26px] lg:translate-x-0 (canto superior esquerdo coincide com o canto inferior esquerdo da barra de reservas) -->
+      <div
+        id="dropdown-rooms"
+        class="hidden absolute top-[calc(100%+12px)] w-full left-0 translate-x-0 lg:w-[380px] lg:-left-[26px] lg:translate-x-0 bg-[#FAF9F6] border-2 border-[#69130D] rounded-lg p-2.5 shadow-dropdown z-50 transition-all max-h-[min(480px,75vh)] overflow-y-auto"
+        role="listbox"
+      >
+        <div class="space-y-1">
+          {roomsList.map((room) => (
+            <button
+              type="button"
+              class="room-option-item w-full flex flex-col p-2.5 rounded-lg text-left hover:bg-[#69130D]/10 transition-colors focus:outline-none focus:ring-1 focus:ring-[#69130D]"
+              data-room-id={room.id}
+              data-max-guests={room.maxGuests}
+              data-room-name={room.name}
+              role="option"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-serif text-sm font-bold text-[#69130D] truncate">{room.name}</span>
+                <span class="text-[11px] font-semibold text-[#69130D] bg-[#69130D]/10 px-2 py-0.5 rounded-full border border-[#69130D]/10 whitespace-nowrap shrink-0">
+                  Máx: {room.maxGuests} pax
+                </span>
+              </div>
+              <span class="text-[11px] text-[#7D7D6A] mt-0.5">{room.bedType}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Divisória Desktop -->
+    <div class="hidden lg:block w-[1px] h-10 bg-[#69130D]/15 mx-1" aria-hidden="true"></div>
+
+    <!-- ===================================================================
+         Secção 2: Período de Viagem (Datas)
+         =================================================================== -->
+    <div class="relative flex-1">
+      <button
+        type="button"
+        id="btn-dates-trigger"
+        class="w-full flex flex-col justify-center px-4 py-2.5 rounded-lg transition-colors text-left outline-none focus:outline-none focus:ring-0 select-none cursor-pointer"
+        aria-label="Escolher Período de Viagem"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+      >
+        <span class="text-[10px] font-bold uppercase tracking-wider text-[#7D7D6A]">DATAS DA ESTADIA</span>
+        <div class="flex items-center justify-between mt-0.5">
+          <span id="selected-dates-text" class="text-sm md:text-base font-semibold text-[#1A1A1A] truncate">
+            Check-in — Check-out
+          </span>
+          <svg id="icon-dates-arrow" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#7D7D6A] shrink-0 ml-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      <!-- Dropdown / Popover de Seleção de Datas:
+           - Em xs, sm, md (< lg): w-full left-0 translate-x-0 (ocupa o comprimento da barra)
+           - Em lg (992px+): lg:w-[680px] lg:left-1/2 lg:-translate-x-1/2 (centrado nessa etapa) -->
+      <div
+        id="dropdown-dates"
+        class="hidden absolute top-[calc(100%+12px)] w-full left-0 translate-x-0 lg:w-[680px] lg:left-1/2 lg:-translate-x-1/2 bg-[#FAF9F6] border-2 border-[#69130D] rounded-lg p-4 sm:p-6 shadow-dropdown z-50 transition-all select-none"
+        role="dialog"
+        aria-label="Calendário de Escolha de Datas"
+      >
+        <!-- Container dos Meses -->
+        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-0">
+          
+          <!-- Linha divisória vertical (Apenas em telas md+ com 2 meses) -->
+          <div class="hidden md:block absolute -top-6 -bottom-6 left-1/2 w-[1px] bg-[#69130D]/20 -translate-x-1/2 z-10" aria-hidden="true"></div>
+
+          <!-- Mês 1: Apresentado sempre (em mobile xs/sm é o único mês visível) -->
+          <div class="md:pr-6 flex flex-col">
+            <!-- Cabeçalho com Texto Estático do Mês e Ano -->
+            <div class="flex items-center justify-between h-9 mb-4">
+              <button
+                type="button"
+                id="btn-cal-prev"
+                class="w-8 h-8 rounded-full flex items-center justify-center text-[#69130D] hover:bg-[#69130D]/10 transition-colors focus:outline-none"
+                aria-label="Mês anterior"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <span id="cal-month-1-title" class="font-serif text-base md:text-lg font-bold text-[#69130D]">
+                Outubro 2026
+              </span>
+              <!-- Botão próximo mês no Mês 1 visível apenas em mobile quando há só 1 mês -->
+              <button
+                type="button"
+                id="btn-cal-next-mobile"
+                class="md:hidden w-8 h-8 rounded-full flex items-center justify-center text-[#69130D] hover:bg-[#69130D]/10 transition-colors focus:outline-none"
+                aria-label="Próximo mês"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              <div class="hidden md:block w-8"></div>
+            </div>
+
+            <!-- Dias da semana a vermelho -->
+            <div class="grid grid-cols-7 text-center mb-2">
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Seg</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Ter</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Qua</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Qui</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Sex</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Sáb</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Dom</span>
+            </div>
+
+            <!-- Grelha Dinâmica dos Dias (grid-cols-7) -->
+            <div id="cal-month-1-grid" class="grid grid-cols-7 gap-1 text-center"></div>
+          </div>
+
+          <!-- Mês 2: Oculto em xs e sm (< md); visível a partir de md (768px+) -->
+          <div class="hidden md:flex md:pl-6 flex-col">
+            <!-- Cabeçalho com Texto Estático do Mês e Ano -->
+            <div class="flex items-center justify-between h-9 mb-4">
+              <div class="w-8"></div>
+              <span id="cal-month-2-title" class="font-serif text-base md:text-lg font-bold text-[#69130D]">
+                Novembro 2026
+              </span>
+              <button
+                type="button"
+                id="btn-cal-next"
+                class="w-8 h-8 rounded-full flex items-center justify-center text-[#69130D] hover:bg-[#69130D]/10 transition-colors focus:outline-none"
+                aria-label="Próximo mês"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Dias da semana a vermelho -->
+            <div class="grid grid-cols-7 text-center mb-2">
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Seg</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Ter</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Qua</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Qui</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Sex</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Sáb</span>
+              <span class="text-[11px] font-bold text-[#69130D] uppercase tracking-wider">Dom</span>
+            </div>
+
+            <!-- Grelha Dinâmica dos Dias (grid-cols-7) -->
+            <div id="cal-month-2-grid" class="grid grid-cols-7 gap-1 text-center"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Divisória Desktop -->
+    <div class="hidden lg:block w-[1px] h-10 bg-[#69130D]/15 mx-1" aria-hidden="true"></div>
+
+    <!-- ===================================================================
+         Secção 3: Hóspedes (Limitados pelo Quarto Selecionado)
+         =================================================================== -->
+    <div class="relative flex-1">
+      <button
+        type="button"
+        id="btn-guests-trigger"
+        class="w-full flex flex-col justify-center px-4 py-2.5 rounded-lg transition-colors text-left outline-none focus:outline-none focus:ring-0 select-none cursor-pointer"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-label="Selecionar número de hóspedes"
+      >
+        <span class="text-[10px] font-bold uppercase tracking-wider text-[#7D7D6A]">HÓSPEDES</span>
+        <div class="flex items-center justify-between mt-0.5">
+          <span id="selected-guests-text" class="text-sm md:text-base font-semibold text-[#1A1A1A] truncate">
+            1 Adulto
+          </span>
+          <svg id="icon-guests-arrow" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#7D7D6A] shrink-0 ml-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      <!-- Dropdown de Hóspedes:
+           - Em xs, sm, md (< lg): w-full left-0 translate-x-0 (ocupa o comprimento da barra)
+           - Em lg (992px+): lg:w-[340px] lg:left-1/2 lg:-translate-x-1/2 (centrado na etapa Hóspedes) -->
+      <div
+        id="dropdown-guests"
+        class="hidden absolute top-[calc(100%+12px)] w-full left-0 translate-x-0 lg:w-[340px] lg:left-1/2 lg:-translate-x-1/2 bg-[#FAF9F6] border-2 border-[#69130D] rounded-lg p-5 shadow-dropdown z-50 transition-all max-h-[min(500px,75vh)] overflow-y-auto"
+        role="dialog"
+        aria-label="Gestor de Hóspedes"
+      >
+        <!-- Aviso de Lotação Máxima -->
+        <div class="mb-4 pb-2 border-b border-[#69130D]/15 flex items-center justify-between text-xs">
+          <span class="text-[#7D7D6A]">Lotação Máxima do Quarto:</span>
+          <span id="label-max-capacity" class="font-bold text-[#69130D]">2 Pessoas</span>
+        </div>
+
+        <!-- Linha: Adultos -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <span class="text-sm font-semibold text-[#1A1A1A] block">Adultos</span>
+            <span class="text-[11px] text-[#7D7D6A] block">A partir de 18 anos</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              id="btn-adults-minus"
+              class="w-8 h-8 rounded-full border border-[#69130D]/30 bg-[#FAF9F6] flex items-center justify-center text-[#69130D] font-bold hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              aria-label="Reduzir adultos"
+            >
+              -
+            </button>
+            <span id="count-adults" class="text-sm font-bold text-[#1A1A1A] w-4 text-center">1</span>
+            <button
+              type="button"
+              id="btn-adults-plus"
+              class="w-8 h-8 rounded-full border border-[#69130D]/30 bg-[#FAF9F6] flex items-center justify-center text-[#69130D] font-bold hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              aria-label="Aumentar adultos"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Linha: Crianças -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-sm font-semibold text-[#1A1A1A] block">Crianças</span>
+            <span class="text-[11px] text-[#7D7D6A] block">0 a 17 anos permitidas</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              id="btn-children-minus"
+              class="w-8 h-8 rounded-full border border-[#69130D]/30 bg-[#FAF9F6] flex items-center justify-center text-[#69130D] font-bold hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              aria-label="Reduzir crianças"
+            >
+              -
+            </button>
+            <span id="count-children" class="text-sm font-bold text-[#1A1A1A] w-4 text-center">0</span>
+            <button
+              type="button"
+              id="btn-children-plus"
+              class="w-8 h-8 rounded-full border border-[#69130D]/30 bg-[#FAF9F6] flex items-center justify-center text-[#69130D] font-bold hover:bg-[#69130D] hover:text-[#FAF9F6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              aria-label="Aumentar crianças"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-painel: Idades das Crianças (0 a 17 anos) -->
+        <div id="panel-child-ages" class="hidden mt-4 pt-3 border-t border-[#69130D]/15">
+          <span class="text-[11px] font-semibold text-[#7D7D6A] block mb-2">Idades das crianças:</span>
+          <div id="grid-child-ages" class="grid grid-cols-2 gap-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         Secção 4: Botão de Pesquisa & Reserva Direta (Deep link VRBO)
+         Em xs (max: 480px) e sm (max: 576px), vai para o centro com flex justify-center
+         =================================================================== -->
+    <div class="w-full flex flex-col items-center justify-center lg:w-auto lg:block lg:pl-3 relative">
+      <button
+        type="button"
+        id="btn-submit-booking"
+        class="w-full max-w-[280px] sm:w-auto inline-flex items-center justify-center border-2 border-[#69130D] text-[#69130D] bg-transparent hover:bg-[#69130D] hover:text-[#ffffff] hover:border-[#69130D] text-xs sm:text-sm font-bold tracking-widest uppercase px-6 py-3 sm:px-8 sm:py-3.5 rounded-lg focus:outline-none transition-all duration-300 ease-out min-h-[44px] cursor-pointer"
+      >
+        Reservar
+      </button>
+
+      <!-- Mensagem de Protótipo debaixo do Botão Reservar -->
+      <div
+        id="booking-prototype-toast"
+        role="status"
+        class="hidden mt-2.5 lg:absolute lg:top-full lg:right-0 lg:mt-3 w-full max-w-[280px] bg-[#69130D] text-[#FAF9F6] text-xs font-medium px-4 py-2.5 rounded-lg shadow-xl text-center leading-snug z-30 transition-all duration-300"
+      >
+        Website em fase de protótipo.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  import { buildVrboDeepLink } from '@/lib/vrbo/urlBuilder';
+  import type { RoomId } from '@/types/booking';
+
+  function initBookingBarComponent() {
+    // Estado Reativo do Componente
+    let currentRoomId: RoomId = 'tangerina';
+    let maxGuestsAllowed = 2;
+    let adults = 1;
+    let children = 0;
+    let checkInDate: string | null = null;
+    let checkOutDate: string | null = null;
+
+    // Elementos DOM
+    const btnRoomTrigger = document.getElementById('btn-room-trigger');
+    const dropdownRooms = document.getElementById('dropdown-rooms');
+    const selectedRoomNameEl = document.getElementById('selected-room-name');
+    const iconRoomArrow = document.getElementById('icon-room-arrow');
+
+    const btnDatesTrigger = document.getElementById('btn-dates-trigger');
+    const dropdownDates = document.getElementById('dropdown-dates');
+    const selectedDatesTextEl = document.getElementById('selected-dates-text');
+    const iconDatesArrow = document.getElementById('icon-dates-arrow');
+
+    const btnGuestsTrigger = document.getElementById('btn-guests-trigger');
+    const dropdownGuests = document.getElementById('dropdown-guests');
+    const selectedGuestsTextEl = document.getElementById('selected-guests-text');
+    const labelMaxCapacityEl = document.getElementById('label-max-capacity');
+    const iconGuestsArrow = document.getElementById('icon-guests-arrow');
+
+    const btnAdultsMinus = document.getElementById('btn-adults-minus') as HTMLButtonElement | null;
+    const btnAdultsPlus = document.getElementById('btn-adults-plus') as HTMLButtonElement | null;
+    const countAdultsEl = document.getElementById('count-adults');
+
+    const btnChildrenMinus = document.getElementById('btn-children-minus') as HTMLButtonElement | null;
+    const btnChildrenPlus = document.getElementById('btn-children-plus') as HTMLButtonElement | null;
+    const countChildrenEl = document.getElementById('count-children');
+    const panelChildAges = document.getElementById('panel-child-ages');
+    const gridChildAges = document.getElementById('grid-child-ages');
+
+    const btnSubmit = document.getElementById('btn-submit-booking');
+
+    if (!btnRoomTrigger || !dropdownRooms || !btnDatesTrigger || !dropdownDates || !btnGuestsTrigger || !dropdownGuests) {
+      return;
+    }
+
+    // Gestão de Dropdowns e Rotação das Setas
+    function closeDropdowns() {
+      dropdownRooms?.classList.add('hidden');
+      dropdownDates?.classList.add('hidden');
+      dropdownGuests?.classList.add('hidden');
+      btnRoomTrigger?.setAttribute('aria-expanded', 'false');
+      btnDatesTrigger?.setAttribute('aria-expanded', 'false');
+      btnGuestsTrigger?.setAttribute('aria-expanded', 'false');
+      iconRoomArrow?.classList.remove('rotate-180');
+      iconDatesArrow?.classList.remove('rotate-180');
+      iconGuestsArrow?.classList.remove('rotate-180');
+    }
+
+    btnRoomTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !dropdownRooms.classList.contains('hidden');
+      closeDropdowns();
+      if (!isOpen) {
+        dropdownRooms.classList.remove('hidden');
+        btnRoomTrigger.setAttribute('aria-expanded', 'true');
+        iconRoomArrow?.classList.add('rotate-180');
+      }
+    });
+
+    btnDatesTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !dropdownDates.classList.contains('hidden');
+      closeDropdowns();
+      if (!isOpen) {
+        dropdownDates.classList.remove('hidden');
+        btnDatesTrigger.setAttribute('aria-expanded', 'true');
+        iconDatesArrow?.classList.add('rotate-180');
+      }
+    });
+
+    btnGuestsTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !dropdownGuests.classList.contains('hidden');
+      closeDropdowns();
+      if (!isOpen) {
+        dropdownGuests.classList.remove('hidden');
+        btnGuestsTrigger.setAttribute('aria-expanded', 'true');
+        iconGuestsArrow?.classList.add('rotate-180');
+      }
+    });
+
+    dropdownRooms.addEventListener('click', (e) => e.stopPropagation());
+    dropdownDates.addEventListener('click', (e) => e.stopPropagation());
+    dropdownGuests.addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('click', closeDropdowns);
+
+    // ===================================================================
+    // Calendário Dinâmico em TypeScript (Conciso & Preciso)
+    // ===================================================================
+    const MONTH_NAMES = [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+    const MONTH_SHORT = [
+      'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+    ];
+
+    const todayDate = new Date();
+    let viewYear = todayDate.getFullYear();
+    let viewMonth = todayDate.getMonth();
+
+    const calMonth1Title = document.getElementById('cal-month-1-title');
+    const calMonth2Title = document.getElementById('cal-month-2-title');
+    const calMonth1Grid = document.getElementById('cal-month-1-grid');
+    const calMonth2Grid = document.getElementById('cal-month-2-grid');
+    const btnCalPrev = document.getElementById('btn-cal-prev');
+    const btnCalNext = document.getElementById('btn-cal-next');
+    const btnCalNextMobile = document.getElementById('btn-cal-next-mobile');
+
+    function formatDateDisplay(d: Date): string {
+      return `${d.getDate()} ${MONTH_SHORT[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    function formatDateISO(d: Date): string {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    const todayStr = formatDateISO(todayDate);
+
+    function renderMonth(targetYear: number, targetMonth: number, titleEl: HTMLElement | null, gridEl: HTMLElement | null) {
+      if (!titleEl || !gridEl) return;
+      titleEl.textContent = `${MONTH_NAMES[targetMonth]} ${targetYear}`;
+      gridEl.innerHTML = '';
+
+      // Offset da semana começando em Segunda-feira (0 = Seg, ..., 6 = Dom)
+      const firstDayOffset = (new Date(targetYear, targetMonth, 1).getDay() + 6) % 7;
+      const totalDays = new Date(targetYear, targetMonth + 1, 0).getDate();
+
+      // Células vazias iniciais
+      for (let i = 0; i < firstDayOffset; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'w-9 h-9';
+        gridEl.appendChild(emptyCell);
+      }
+
+      // Renderização dinâmica dos dias
+      for (let day = 1; day <= totalDays; day++) {
+        const currentDate = new Date(targetYear, targetMonth, day);
+        const iso = formatDateISO(currentDate);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = day.toString();
+        btn.setAttribute('data-date', iso);
+
+        const isCheckIn = checkInDate === iso;
+        const isCheckOut = checkOutDate === iso;
+        const isInRange = checkInDate && checkOutDate && iso > checkInDate && iso < checkOutDate;
+        const isToday = iso === todayStr;
+        const isPast = iso < todayStr;
+
+        let baseClasses = 'w-9 h-9 text-xs font-semibold flex items-center justify-center transition-colors ';
+
+        if (isCheckIn || isCheckOut) {
+          baseClasses += 'bg-[#69130D] text-[#FAF9F6] font-bold rounded-full shadow-sm ';
+        } else if (isInRange) {
+          baseClasses += 'bg-[#69130D]/15 text-[#69130D] rounded-none ';
+        } else if (isToday) {
+          baseClasses += 'border border-[#69130D] text-[#69130D] font-bold rounded-full hover:bg-[#69130D]/10 ';
+        } else if (isPast) {
+          baseClasses += 'text-[#7D7D6A]/30 cursor-not-allowed ';
+          btn.disabled = true;
+        } else {
+          baseClasses += 'text-[#1A1A1A] hover:bg-[#69130D]/15 hover:text-[#69130D] rounded-full ';
+        }
+
+        btn.className = baseClasses;
+
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!checkInDate || (checkInDate && checkOutDate)) {
+            checkInDate = iso;
+            checkOutDate = null;
+            if (selectedDatesTextEl) selectedDatesTextEl.textContent = `${formatDateDisplay(currentDate)} — Check-out`;
+          } else if (checkInDate && !checkOutDate) {
+            if (iso > checkInDate) {
+              checkOutDate = iso;
+              const checkInObj = new Date(checkInDate + 'T00:00:00');
+              if (selectedDatesTextEl) {
+                selectedDatesTextEl.textContent = `${formatDateDisplay(checkInObj)} — ${formatDateDisplay(currentDate)}`;
+              }
+              closeDropdowns();
+            } else {
+              checkInDate = iso;
+              if (selectedDatesTextEl) selectedDatesTextEl.textContent = `${formatDateDisplay(currentDate)} — Check-out`;
+            }
+          }
+          renderCalendar();
+        });
+
+        gridEl.appendChild(btn);
+      }
+    }
+
+    function renderCalendar() {
+      // Mês 1
+      renderMonth(viewYear, viewMonth, calMonth1Title, calMonth1Grid);
+
+      // Mês 2 (mês seguinte)
+      let nextMonth = viewMonth + 1;
+      let nextYear = viewYear;
+      if (nextMonth > 11) {
+        nextMonth = 0;
+        nextYear++;
+      }
+      renderMonth(nextYear, nextMonth, calMonth2Title, calMonth2Grid);
+    }
+
+    function prevMonth() {
+      viewMonth--;
+      if (viewMonth < 0) {
+        viewMonth = 11;
+        viewYear--;
+      }
+      renderCalendar();
+    }
+
+    function nextMonth() {
+      viewMonth++;
+      if (viewMonth > 11) {
+        viewMonth = 0;
+        viewYear++;
+      }
+      renderCalendar();
+    }
+
+    btnCalPrev?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevMonth();
+    });
+
+    btnCalNext?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextMonth();
+    });
+
+    btnCalNextMobile?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextMonth();
+    });
+
+    renderCalendar();
+
+    // ===================================================================
+    // Gestão de Hóspedes
+    // ===================================================================
+    function updateGuestsDisplay() {
+      const totalGuests = adults + children;
+      if (selectedGuestsTextEl) {
+        const adultsLabel = adults === 1 ? '1 Adulto' : `${adults} Adultos`;
+        const childrenLabel = children === 0 ? '' : children === 1 ? ', 1 Criança' : `, ${children} Crianças`;
+        selectedGuestsTextEl.textContent = `${adultsLabel}${childrenLabel}`;
+      }
+
+      if (countAdultsEl) countAdultsEl.textContent = adults.toString();
+      if (countChildrenEl) countChildrenEl.textContent = children.toString();
+
+      if (btnAdultsMinus) btnAdultsMinus.disabled = adults <= 1;
+      if (btnChildrenMinus) btnChildrenMinus.disabled = children <= 0;
+
+      const isAtMaxCapacity = totalGuests >= maxGuestsAllowed;
+      if (btnAdultsPlus) btnAdultsPlus.disabled = isAtMaxCapacity;
+      if (btnChildrenPlus) btnChildrenPlus.disabled = isAtMaxCapacity;
+
+      if (children > 0 && panelChildAges && gridChildAges) {
+        panelChildAges.classList.remove('hidden');
+        gridChildAges.innerHTML = '';
+        for (let i = 0; i < children; i++) {
+          const selectWrapper = document.createElement('div');
+          selectWrapper.className = 'flex flex-col text-[11px] gap-1';
+          
+          const label = document.createElement('label');
+          label.textContent = `Criança ${i + 1}`;
+          label.className = 'text-[#7D7D6A] font-semibold';
+          
+          const select = document.createElement('select');
+          select.className = 'w-full px-2 py-1.5 rounded-lg border border-[#69130D]/20 bg-[#FAF9F6] text-xs text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#69130D]';
+          for (let age = 0; age <= 17; age++) {
+            const opt = document.createElement('option');
+            opt.value = age.toString();
+            opt.textContent = `${age} ${age === 1 ? 'ano' : 'anos'}`;
+            select.appendChild(opt);
+          }
+          selectWrapper.appendChild(label);
+          selectWrapper.appendChild(select);
+          gridChildAges.appendChild(selectWrapper);
+        }
+      } else if (panelChildAges) {
+        panelChildAges.classList.add('hidden');
+      }
+    }
+
+    // Seleção de Quarto
+    const roomOptions = document.querySelectorAll('.room-option-item');
+    roomOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        const roomId = option.getAttribute('data-room-id') as RoomId | null;
+        const maxGuests = parseInt(option.getAttribute('data-max-guests') || '2', 10);
+        const roomName = option.getAttribute('data-room-name') || '';
+
+        if (roomId) currentRoomId = roomId;
+        maxGuestsAllowed = maxGuests;
+
+        if (selectedRoomNameEl) selectedRoomNameEl.textContent = roomName;
+        if (labelMaxCapacityEl) labelMaxCapacityEl.textContent = `${maxGuests} Pessoas`;
+
+        if (adults + children > maxGuestsAllowed) {
+          adults = 1;
+          children = Math.min(children, Math.max(0, maxGuestsAllowed - 1));
+        }
+
+        updateGuestsDisplay();
+        closeDropdowns();
+      });
+    });
+
+    // Controlos de Adultos (+/-)
+    btnAdultsPlus?.addEventListener('click', () => {
+      if (adults + children < maxGuestsAllowed) {
+        adults++;
+        updateGuestsDisplay();
+      }
+    });
+
+    btnAdultsMinus?.addEventListener('click', () => {
+      if (adults > 1) {
+        adults--;
+        updateGuestsDisplay();
+      }
+    });
+
+    // Controlos de Crianças (+/-)
+    btnChildrenPlus?.addEventListener('click', () => {
+      if (adults + children < maxGuestsAllowed) {
+        children++;
+        updateGuestsDisplay();
+      }
+    });
+
+    btnChildrenMinus?.addEventListener('click', () => {
+      if (children > 0) {
+        children--;
+        updateGuestsDisplay();
+      }
+    });
+
+    updateGuestsDisplay();
+
+    // Modo Protótipo: Mensagem de demonstração profissional abaixo do botão Reservar
+    const prototypeToast = document.getElementById('booking-prototype-toast');
+    let toastTimeout: any;
+
+    btnSubmit?.addEventListener('click', () => {
+      closeDropdowns();
+      if (!prototypeToast) return;
+      prototypeToast.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        prototypeToast.classList.add('hidden');
+      }, 4500);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBookingBarComponent);
+  } else {
+    initBookingBarComponent();
+  }
+</script>
