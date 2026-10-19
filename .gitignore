@@ -10,6 +10,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Documentação interna
+GEMINI.md
+DESIGN_SYSTEM.md
+
 # Protótipo: Apenas a Homepage (src/pages/index.astro) é versionada
 src/pages/*
 !src/pages/index.astro
